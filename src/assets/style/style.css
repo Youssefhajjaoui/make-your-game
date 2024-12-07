@@ -1,4 +1,10 @@
-/* General container styling */
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
 .container {
     margin: 0px;
     height: 500px;
@@ -6,58 +12,42 @@
     border: 2px solid #fff;
     position: relative;
     overflow: hidden;
+    max-width: 700px;
 }
 
-/* Styling for individual bricks */
-.brike {
+.brick {
     width: 50px;
     height: 20px;
     background-color: #5ACCE5;
-    /* Light blue color */
     margin: 5px;
     display: inline-block;
-    /* Make bricks align in rows */
     border: 1px solid #fff;
-    /* Optional border for bricks */
     border-radius: 4px;
-    /* Rounded corners */
 }
 
-/* Styling for the paddle */
-.padel {
+.paddle {
     width: 100px;
     height: 15px;
     background-color: #FF5733;
-    /* Bright orange paddle */
     position: absolute;
     bottom: 10px;
-    /* Positioned slightly above the bottom */
     left: 50%;
-    /* Center the paddle horizontally */
     transform: translateX(-50%);
-    /* Adjust to center properly */
     border-radius: 5px;
-    /* Rounded corners for a smooth look */
 }
 
-/* Styling for the ball */
 .ball {
     width: 15px;
     height: 15px;
     background-color: #FFD700;
     position: absolute;
     bottom: 30px;
-    /* Start above the paddle */
     left: 50%;
-    /* Center the ball horizontally */
     transform: translateX(-50%);
     border-radius: 50%;
-    /* Make the ball circular */
     animation: bounce 2s infinite linear;
-    /* Optional bouncing effect */
 }
 
-/* Example animation for the ball (optional) */
 @keyframes bounce {
 
     0%,
