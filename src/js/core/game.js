@@ -4,34 +4,58 @@ import { Paddle } from "../models/paddle.js";
 import { levels } from "./utils.js";
 
 export class Game {
-    constructor(numlevel) {
+    constructor(numLevel) {
         this.isPaused = false;
         this.isLose = false;
         this.bricksLive = [];
-        this.Paddle, this.Ball = this.setup(numlevel)
+        this.currentLevel = numLevel;
+
+        const { paddle, ball } = this.setup(numLevel);
+        this.paddle = paddle;
+        this.ball = ball;
     }
 
     setup(numOfLevel) {
-        let paddle = new Paddle();
-        let ball = new Ball();
+        const paddle = new Paddle();
+        const ball = new Ball();
+
         const board = levels[numOfLevel];
-        for (let i = 0; i < board.length; i++) {
-            for (let j = 0; j < board[i].length; j++) {
-                let brick = new Brick();
-                brick.type = board[i][j];
-                if (board[i][j] === 0) {
-                    brick.elem.style.visibility = "hidden";
-                }
-                this.bricksLive.push(brick);
-            }
-        }
-        return paddle, ball
+
+        this.bricksLive = board.flatMap((row, i) => 
+            row.map((brickType, j) => {
+                if (brickType === 0) return null;
+                
+                const brick = new Brick();
+                brick.type = brickType;
+                return brick;
+            }).filter(brick => brick !== null)
+        );
+
+        return { paddle, ball };
     }
 
     start() {
+        this.paddle.listener();
+    }
+
+    update() {
+        this.checkCollisions();
+        this.updateBallMovement();
+    }
+
+    checkCollisions() {
+       
+    }
+
+    updateBallMovement() {
         
     }
 
+    isWin() {
+        return this.bricksLive.length === 0;
+    }
 
-
+    isGameOver() {
+        return this.isLose;
+    }
 }

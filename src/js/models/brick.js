@@ -1,9 +1,10 @@
 export class Brick {
-    constructor() {
+    constructor(x, y) {
         this.type = 0;
         this.elem = this.renderBrick(this.type);
-        this.with = this.elem.getBoundingClientRect().right - this.elem.getBoundingClientRect().left;
-        this.height = this.elem.getBoundingClientRect().y - this.elem.getBoundingClientRect().bottom;
+        this.Isdetroyed = this.isdetroyed(x, y)
+        this.ballx = x;
+        this.bally = y;
     }
 
     renderBrick(type) {
@@ -14,5 +15,10 @@ export class Brick {
         return brick
     }
 
+    isdetroyed() {
+        if (this.ballx < this.elem.getBoundingClientRect().right && this.ballx > this.elem.getBoundingClientRect().left && this.bally > this.elem.getBoundingClientRect().y && this.bally < this.elem.getBoundingClientRect().bottom) {
+            this.elem.style.visibility = "hidden";
+        }
+    }
 
 }

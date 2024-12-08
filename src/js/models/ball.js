@@ -4,6 +4,8 @@ export class Ball {
         this.y = window.innerHeight / 2;
         this.elem = this.renderBall();
         this.speed = 2;
+        this.vectx = 0;
+        this.vecty = 2;
     }
 
     renderBall() {
@@ -17,6 +19,8 @@ export class Ball {
     }
 
     move() {
-
+        this.x += this.vectx;
+        this.y += this.vecty;
     }
+
 }
