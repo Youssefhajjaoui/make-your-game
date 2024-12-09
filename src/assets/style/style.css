@@ -10,7 +10,7 @@ body {
 .container {
     margin: 0px;
     height: 500px;
-    background-color: #000;
+    background-color: transparent;
     border: 2px solid #fff;
     position: relative;
     overflow: hidden;
@@ -40,7 +40,7 @@ body {
 }
 
 .ball {
-    width: 15px;
+    width: 14px;
     height: 15px;
     background-color: #FFD700;
     position: absolute;

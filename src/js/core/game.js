@@ -18,6 +18,7 @@ export class Game {
     setup(numOfLevel) {
         const paddle = new Paddle();
         const ball = new Ball();
+        ball.x=paddle.re
 
         const board = levels[numOfLevel];
 

@@ -1,11 +1,12 @@
 export class Ball {
-    constructor() {
+    constructor(x, y) {
         this.x = window.innerWidth / 2;
         this.y = window.innerHeight / 2;
         this.elem = this.renderBall();
         this.speed = 2;
         this.vectx = 0;
         this.vecty = 2;
+        this.radius = 7;
     }
 
     renderBall() {
@@ -18,9 +19,30 @@ export class Ball {
         return ball
     }
 
-    move() {
-        this.x += this.vectx;
-        this.y += this.vecty;
+    getCurrentPosition() {
+        const computedStyle = window.getComputedStyle(this.elem);
+        return {
+            left: parseInt(computedStyle.left),
+            top: parseInt(computedStyle.top)
+        };
+    }
+
+    move(vectx, vecty) {
+        // Update coordinates
+        this.x += vectx;
+        this.y += vecty;
+
+        // Update element position
+        this.elem.style.left = `${this.x}px`;
+        this.elem.style.top = `${this.y}px`;
+    }
+
+    // Optional: method to reset position
+    reset() {
+        this.x = window.innerWidth / 2;
+        this.y = window.innerHeight / 2;
+        this.elem.style.left = `${this.x}px`;
+        this.elem.style.top = `${this.y}px`;
     }
 
 }
