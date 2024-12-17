@@ -33,9 +33,12 @@ export function updateGameState(game) {
         newDy = -Math.abs(newDy);
     }
 
+    game.bricksLive.forEach(element => {
+        const brick = element.getBoundingClientRect()
+    });
+
     ball.move(newDx, newDy);
 
-    // Update ball's velocity
     ball.vectx = newDx;
     ball.vecty = newDy;
 

@@ -9,7 +9,6 @@ export class Game {
         this.isLose = false;
         this.bricksLive = [];
         this.currentLevel = numLevel;
-
         const { paddle, ball } = this.setup(numLevel);
         this.paddle = paddle;
         this.ball = ball;
