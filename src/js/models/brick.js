@@ -1,7 +1,10 @@
 export class Brick {
+    elem = any;
     constructor(x, y) {
+        this.x = x;
+        this.y = y;
         this.type = 1;
-        this.elem = this.renderBrick(this.type);
+        this.elem = any;
         this.Isdetroyed = this.isdetroyed(x, y);
     }
 
@@ -10,13 +13,11 @@ export class Brick {
         const brick = document.createElement('div');
         brick.className = 'brick';
         container.append(brick);
+        this.elem = brick
         return brick
     }
 
     isdetroyed() {
-        // if (this.ballx < this.elem.getBoundingClientRect().right && this.ballx > this.elem.getBoundingClientRect().left && this.bally > this.elem.getBoundingClientRect().y && this.bally < this.elem.getBoundingClientRect().bottom) {
-        //     this.elem.style.visibility = "hidden";
-        // }
         const ball = document.querySelector('.ball');
         const brickRect = this.brick.getBoundingClientRect();
         const ballRect = ball.getBoundingClientRect();
@@ -25,7 +26,11 @@ export class Brick {
             ballRect.x <= brickRect.right &&
             ballRect.right >= brickRect.x &&
             ballRect.bottom >= brickRect.y)) {
-            this.elem.style.visibility = "hidden";
+            this.type--;
+            if (this.type === 0) {
+                this.elem.style.visibility = "hidden";
+                this.Isdetroyed = true;
+            }
             return true
         }
         return false

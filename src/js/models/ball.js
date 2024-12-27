@@ -1,9 +1,8 @@
 export class Ball {
     constructor(x, y) {
-        this.x = window.innerWidth / 2;
-        this.y = window.innerHeight / 2;
+        this.x = 0;
+        this.y = 0;
         this.elem = this.renderBall();
-        this.speed = 2;
         this.vectx = 0;
         this.vecty = 2;
         this.radius = 7;
