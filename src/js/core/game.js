@@ -30,7 +30,7 @@ export class Game {
                 const brickelem = brick.renderBrick();
                 brick.type = brickType;
                 container.appendChild(brickelem);
-                return brickelem;
+                return brick;
             }).filter(brick => brick !== null)
         );
         this.paddle = paddle;

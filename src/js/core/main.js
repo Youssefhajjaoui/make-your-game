@@ -5,7 +5,7 @@ import { Game } from "./game.js";
 
 export function main() {
     const game = new Game(1);
-    game.setup(1);
+    game.setup(2);
     //console.log(game.ball, game.paddle, game.bricksLive);
     game.paddle.listener();
 
@@ -13,7 +13,7 @@ export function main() {
 }
 export function updateGameState(game) {
     // console.log(game.paddle.elem);
-
+    collisionWithBricks(game);
     collisionswithcontainer(game);
     collisionWithPaddle(game);
     // Continue game loop
@@ -25,37 +25,32 @@ function collisionswithcontainer(game) {
     const containerRect = container.getBoundingClientRect();
     const ball = game.ball;
 
-    // Calculate actual boundaries including the border
-    const rightBound = containerRect.width - ball.radius * 2;  // Account for full ball width
-    const bottomBound = containerRect.height - ball.radius * 2; // Account for full ball height
+
+    const rightBound = containerRect.width - ball.radius * 2;
+    const bottomBound = containerRect.height - ball.radius * 2;
 
     let newDx = ball.vectx;
     let newDy = ball.vecty;
 
-    // Right boundary
     if (ball.x >= rightBound) {
-        ball.x = rightBound; // Reset position
+        ball.x = rightBound;
         newDx = -Math.abs(newDx);
     }
-    // Left boundary
+
     if (ball.x <= 0) {
         ball.x = 0;
         newDx = Math.abs(newDx);
     }
-    // Top boundary
+
     if (ball.y <= 0) {
         ball.y = 0;
         newDy = Math.abs(newDy);
     }
-    // Bottom boundary
+
     if (ball.y >= bottomBound) {
         ball.y = bottomBound;
         newDy = -Math.abs(newDy);
     }
-
-    game.bricksLive.forEach(element => {
-        const brick = element.getBoundingClientRect();
-    });
 
     ball.move(newDx, newDy);
     ball.vectx = newDx;
@@ -66,29 +61,87 @@ function collisionWithPaddle(game) {
     const ball = game.ball;
     const paddle = game.paddle.elem.getBoundingClientRect();
 
-    const ballCenterX = ball.x;
-    const ballCenterY = ball.y;
 
-    // Check if ball is within paddle's x bounds and at the right y position
-    if (ballCenterX >= paddle.left &&
-        ballCenterX >= paddle.right &&
-        ballCenterY >= paddle.top && ballCenterY <= paddle.bottom) {
+    const ballElem = ball.elem.getBoundingClientRect();
+    const ballRadius = ballElem.width / 2;
+    const ballCenterX = ballElem.left + ballRadius;
+    const ballCenterY = ballElem.top + ballRadius;
 
-        // On collision, reverse vertical direction
+    const ballLeft = ballCenterX - ballRadius;
+    const ballRight = ballCenterX + ballRadius;
+    const ballTop = ballCenterY - ballRadius;
+    const ballBottom = ballCenterY + ballRadius;
+
+
+    if (ballRight >= paddle.left &&
+        ballLeft <= paddle.right &&
+        ballBottom >= paddle.top &&
+        ballTop <= paddle.bottom) {
+
+
         ball.vecty = -Math.abs(ball.vecty);
 
-        // Change horizontal direction based on where the ball hits
-        const hitLocation = (ballCenterX - paddle.left) / paddle.width;
+
+        const paddleWidth = paddle.right - paddle.left;
+        const hitLocation = (ballCenterX - paddle.left) / paddleWidth;
+
         if (hitLocation < 0.3) {
-            ball.vectx = -5; // Left side hit
+            ball.vectx = -2;
         } else if (hitLocation > 0.7) {
-            ball.vectx = 5;  // Right side hit
+            ball.vectx = 2;
         } else {
-            // Hit in middle, keep current horizontal direction
-            ball.vectx = ball.vectx * 0.8; // Slightly reduce horizontal speed
+            ball.vectx *= 0.8;
         }
     }
 
+
     ball.move(ball.vectx, ball.vecty);
 }
+
+function collisionWithBricks(game) {
+    const ball = game.ball;
+    const ballElem = ball.elem.getBoundingClientRect();
+    const ballRadius = ballElem.width / 2;
+    const ballCenterX = ballElem.left + ballRadius;
+    const ballCenterY = ballElem.top + ballRadius;
+
+    // Iterate over all live bricks
+    game.bricksLive.forEach((brick, index) => {
+        const brickRect = brick.elem.getBoundingClientRect();
+
+        // Check for collision
+        if (
+            ballCenterX + ballRadius >= brickRect.left &&
+            ballCenterX - ballRadius <= brickRect.right &&
+            ballCenterY + ballRadius >= brickRect.top &&
+            ballCenterY - ballRadius <= brickRect.bottom
+        ) {
+            // Determine the collision side
+            const overlapLeft = Math.abs(ballCenterX + ballRadius - brickRect.left);
+            const overlapRight = Math.abs(ballCenterX - ballRadius - brickRect.right);
+            const overlapTop = Math.abs(ballCenterY + ballRadius - brickRect.top);
+            const overlapBottom = Math.abs(ballCenterY - ballRadius - brickRect.bottom);
+
+            // Find the smallest overlap to determine the collision side
+            const minOverlap = Math.min(overlapLeft, overlapRight, overlapTop, overlapBottom);
+
+            if (minOverlap === overlapTop) {
+                ball.vecty = -Math.abs(ball.vecty); // Ball hit the top of the brick
+            } else if (minOverlap === overlapBottom) {
+                ball.vecty = Math.abs(ball.vecty); // Ball hit the bottom of the brick
+            } else if (minOverlap === overlapLeft) {
+                ball.vectx = -Math.abs(ball.vectx); // Ball hit the left side of the brick
+            } else if (minOverlap === overlapRight) {
+                ball.vectx = Math.abs(ball.vectx); // Ball hit the right side of the brick
+            }
+
+            // Remove the brick after collision
+            game.bricksLive.splice(index, 1);
+            // brick.isdetroyed();
+            brick.elem.style.visibility = "hidden";
+        }
+    });
+}
+
+
 main();

@@ -27,7 +27,8 @@ export class Brick {
             ballRect.bottom >= brickRect.y)) {
             this.type--;
             if (this.type === 0) {
-                this.elem.style.visibility = "hidden";
+                this.elem.style.transition = "opacity 0.5s";
+                this.elem.style.opacity = "0";
                 this.Isdetroyed = true;
             }
             return true
