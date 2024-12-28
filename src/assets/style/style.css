@@ -8,14 +8,12 @@ body {
 
 
 .container {
-    margin: 0px;
-    height: 500px;
-    background-color: transparent;
-    border: 2px solid #fff;
     position: relative;
+    width: 80vw;
+    height: 80vh;
+    background-color: #222;
+    border: 2px solid #fff;
     overflow: hidden;
-    max-width: 700px;
-    padding: 0px;
 }
 
 .brick {
@@ -29,27 +27,57 @@ body {
 }
 
 .paddle {
-    width: 100px;
-    height: 15px;
+    width: 10%;
+    /* Scales with screen size */
+    max-width: 150px;
+    /* Restricts maximum width */
+    min-width: 50px;
+    /* Restricts minimum width */
+    height: 14px;
     background-color: #FF5733;
     position: absolute;
-    bottom: 10px;
+    bottom: 2%;
+    /* Relative to screen height */
     left: 50%;
     transform: translateX(-50%);
     border-radius: 5px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.5);
+    /* Add some style */
 }
 
 .ball {
-    width: 14px;
-    height: 15px;
+    width: 1.5%;
+    /* Scales with screen size */
+    height: 1.5%;
+    min-width: 10px;
+    /* Minimum size */
+    min-height: 10px;
+    max-width: 20px;
+    /* Maximum size */
+    max-height: 20px;
     background-color: #FFD700;
     position: absolute;
-    bottom: 30px;
+    bottom: 30%;
+    /* Adjust as needed for starting position */
     left: 50%;
     transform: translateX(-50%);
     border-radius: 50%;
-    animation: bounce 2s infinite linear;
+    animation: bounce 2s infinite ease-in-out;
 }
+
+@keyframes bounce {
+
+    0%,
+    100% {
+        transform: translateX(-50%) translateY(0);
+    }
+
+    50% {
+        transform: translateX(-50%) translateY(-50px);
+        /* Height of the bounce */
+    }
+}
+
 
 @keyframes bounce {
 

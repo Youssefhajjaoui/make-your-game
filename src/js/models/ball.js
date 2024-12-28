@@ -2,7 +2,7 @@ export class Ball {
     constructor(x, y) {
         this.x = 0;
         this.y = 0;
-        this.elem = this.renderBall();
+        this.elem = null;
         this.vectx = 0;
         this.vecty = 2;
         this.radius = 7;
@@ -12,9 +12,12 @@ export class Ball {
         let container = document.querySelector('.container');
         const ball = document.createElement('div');
         ball.className = "ball";
-        ball.style.left = this.x;
-        ball.style.top = this.y;
+        this.x = container.clientWidth / 2;
+        this.y = container.clientHeight;
+        ball.style.left = `${this.x}px`;
+        ball.style.top = `${this.y}px`;
         container.append(ball);
+        this.elem = ball;
         return ball
     }
 

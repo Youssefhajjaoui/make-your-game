@@ -1,11 +1,10 @@
 export class Brick {
-    elem = any;
     constructor(x, y) {
         this.x = x;
         this.y = y;
         this.type = 1;
-        this.elem = any;
-        this.Isdetroyed = this.isdetroyed(x, y);
+        this.elem = null;
+        this.Isdetroyed = false;
     }
 
     renderBrick(type) {

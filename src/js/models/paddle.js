@@ -1,23 +1,19 @@
 export class Paddle {
     constructor() {
-        this.x = 100;
+        this.x = 350;
         this.y = 0;
-        this.elem = this.renderPaddle();
-
-        let rect = this.elem.getBoundingClientRect();
-        this.width = rect.right - rect.left;
-        this.height = rect.bottom - rect.top;
-
-        this.y = document.querySelector('.container').offsetHeight - this.height - 10;
-        this.elem.style.left = `${this.x}px`;
-        this.elem.style.top = `${this.y}px`;
+        this.elem = null;
+        this.raduis = 50;
     }
 
     renderPaddle() {
         let container = document.querySelector('.container');
         let paddle = document.createElement('div');
         paddle.className = "paddle";
+        paddle.style.left = `${this.x}px`;
         container.append(paddle);
+        this.elem = paddle;
+        this.rect = paddle.getBoundingClientRect();
         return paddle;
     }
 
@@ -44,6 +40,7 @@ export class Paddle {
 
     listener() {
         document.addEventListener('keydown', (event) => {
+
             switch (event.key) {
                 case "ArrowLeft":
                     this.moveLeft();
@@ -52,6 +49,7 @@ export class Paddle {
                     this.moveRight();
                     break;
             }
+            console.log(this.x, this.y);
         })
     }
 }

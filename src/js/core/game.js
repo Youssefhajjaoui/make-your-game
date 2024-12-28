@@ -9,33 +9,34 @@ export class Game {
         this.isLose = false;
         this.bricksLive = [];
         this.currentLevel = numLevel;
-        const { paddle, ball } = this.setup(numLevel);
-        this.paddle = paddle;
-        this.ball = ball;
+        this.paddle = null;
+        this.ball = null;
     }
 
     setup(numOfLevel) {
+        let container = document.querySelector('.container');
+        container.className = 'container';
         const paddle = new Paddle();
+        const paddlelem = paddle.renderPaddle();
         const ball = new Ball();
-        ball.x=paddle.re
-
+        const ballelem = ball.renderBall();
+        container.append(paddlelem);
+        container.append(ballelem);
         const board = levels[numOfLevel];
-
-        this.bricksLive = board.flatMap((row, i) => 
+        this.bricksLive = board.flatMap((row, i) =>
             row.map((brickType, j) => {
                 if (brickType === 0) return null;
-                
                 const brick = new Brick();
+                const brickelem = brick.renderBrick();
                 brick.type = brickType;
-                return brick;
+                container.appendChild(brickelem);
+                return brickelem;
             }).filter(brick => brick !== null)
         );
-
+        this.paddle = paddle;
+        this.ball = ball;
+        document.body.append(container);
         return { paddle, ball };
-    }
-
-    start() {
-        this.paddle.listener();
     }
 
     update() {
@@ -44,11 +45,11 @@ export class Game {
     }
 
     checkCollisions() {
-       
+
     }
 
     updateBallMovement() {
-        
+
     }
 
     isWin() {
