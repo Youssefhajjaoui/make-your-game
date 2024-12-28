@@ -25,7 +25,14 @@ export class Game {
         const board = levels[numOfLevel];
         this.bricksLive = board.flatMap((row, i) =>
             row.map((brickType, j) => {
-                if (brickType === 0) return null;
+                if (brickType === 0) {
+                    const brick = new Brick();
+                    const brickelem = brick.renderBrick();
+                    brick.type = brickType;
+                    container.appendChild(brickelem);
+                    brickelem.style.visibility = 'hidden';
+                    return null
+                };
                 const brick = new Brick();
                 const brickelem = brick.renderBrick();
                 brick.type = brickType;
