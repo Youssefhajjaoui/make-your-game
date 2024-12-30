@@ -11,14 +11,8 @@ export function main() {
     player.listnermenu();
     game.paddle.listener();
 
-    const startGame = () => {
-        requestAnimationFrame(() => updateGameState(game));
-        document.removeEventListener('keydown', startGame);
-        game.isPaused = false;
-    };
-    if (game.isPaused) {
-        document.addEventListener('keydown', startGame);
-    }
+    requestAnimationFrame(() => updateGameState(game));
+
 }
 
 export function updateGameState(game) {
@@ -31,7 +25,15 @@ export function updateGameState(game) {
         game.gameover();
         return;
     }
-    requestAnimationFrame(() => updateGameState(game));
+    if (game.isPaused) {
+        document.addEventListener('keydown', function startGame() {
+            game.isPaused = false;
+            document.removeEventListener('keydown', startGame);
+        });
+    } else {
+        requestAnimationFrame(() => updateGameState(game));
+    }
 }
+
 
 main();
