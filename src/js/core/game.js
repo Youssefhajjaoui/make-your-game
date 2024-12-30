@@ -21,11 +21,6 @@ export class Game {
         const paddlelem = paddle.renderPaddle();
         const ball = new Ball();
         const ballelem = ball.renderBall();
-        const score = document.createElement('div');
-        score.textContent = `${this.player.score}`;
-        score.classList = 'score';
-        score.style.backgroundColor = 'white';
-        container.append(score);
         container.append(paddlelem);
         container.append(ballelem);
         const board = levels[numOfLevel];
@@ -242,5 +237,7 @@ export class Game {
         header.appendChild(score);
         header.appendChild(livesContainer);
     }
-
+    iswin() {
+        return this.bricksLive.length === 0;
+    }
 }
