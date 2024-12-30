@@ -11,6 +11,7 @@ export class Game {
         this.currentLevel = numLevel;
         this.paddle = null;
         this.ball = null;
+        this.player = null;
     }
 
     setup(numOfLevel) {
@@ -20,6 +21,10 @@ export class Game {
         const paddlelem = paddle.renderPaddle();
         const ball = new Ball();
         const ballelem = ball.renderBall();
+        const score = document.createElement('div');
+        score.textContent = `${this.player.score}`;
+        score.classList = 'score';
+        container.append(score);
         container.append(paddlelem);
         container.append(ballelem);
         const board = levels[numOfLevel];
@@ -166,6 +171,9 @@ export class Game {
                 ballCenterY + ballRadius >= brickRect.top &&
                 ballCenterY - ballRadius <= brickRect.bottom
             ) {
+                this.player.score += 10;
+                const score = document.querySelector('.score');
+                score.textContent = `${this.player.score}`;
                 // Determine the collision side
                 const overlapLeft = Math.abs(ballCenterX + ballRadius - brickRect.left);
                 const overlapRight = Math.abs(ballCenterX - ballRadius - brickRect.right);
