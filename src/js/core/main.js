@@ -25,10 +25,14 @@ export function updateGameState(game) {
         game.gameover();
         return;
     }
-    if (game.isPaused) {
-        document.addEventListener('keydown', function startGame() {
-            game.isPaused = false;
-            document.removeEventListener('keydown', startGame);
+
+    if (game.isPaused && !document.querySelector('.menu-bar')) {
+        document.addEventListener('keydown', function startGame(event) {
+            if (event.code === "Space") { // Check if the key pressed is Space
+                game.isPaused = false;
+                document.removeEventListener('keydown', startGame);
+                requestAnimationFrame(() => updateGameState(game));
+            }
         });
     } else {
         requestAnimationFrame(() => updateGameState(game));

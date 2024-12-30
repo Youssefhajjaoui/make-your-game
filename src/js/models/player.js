@@ -20,6 +20,7 @@ export class Player {
         this.menuButton.addEventListener('click', () => {
             this.game.isPaused = true;
 
+            // Create the menu bar
             this.menuBar = document.createElement('div');
             this.menuBar.classList.add('menu-bar');
 
@@ -32,27 +33,35 @@ export class Player {
             continueBtn.textContent = 'continue';
             continueBtn.classList.add('menu-item');
 
-            continueBtn.addEventListener('click', () => {
+
+            const closeMenu = () => {
                 this.game.isPaused = false;
                 if (this.menuBar) {
                     this.menuBar.remove();
                     this.menuBar = null;
                 }
-            });
+                document.removeEventListener('keydown', handleSpaceKey);
+                return
+            };
+            const handleSpaceKey = (event) => {
+                if (event.code === "Space") {
+                    closeMenu();
+                }
+            };
+
+            continueBtn.addEventListener('click', closeMenu);
+            document.addEventListener('keydown', handleSpaceKey);
 
 
             this.menuBar.appendChild(restart);
             this.menuBar.appendChild(continueBtn);
 
-
             document.body.appendChild(this.menuBar);
         });
 
-
         document.body.appendChild(this.menuButton);
-
-
     }
+
 
     cleanupMenu() {
         if (this.menuButton) {
