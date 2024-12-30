@@ -24,6 +24,7 @@ export class Game {
         const score = document.createElement('div');
         score.textContent = `${this.player.score}`;
         score.classList = 'score';
+        score.style.backgroundColor = 'white';
         container.append(score);
         container.append(paddlelem);
         container.append(ballelem);
@@ -83,8 +84,12 @@ export class Game {
         }
 
         if (ball.y >= bottomBound) {
-            ball.y = bottomBound;
-            newDy = -Math.abs(newDy);
+            this.player.lives--;
+            ball.elem.remove();
+            this.ball = new Ball;
+            this.ball.renderBall();
+            this.isPaused = true;
+            return
         }
 
         ball.move(newDx, newDy);
@@ -98,55 +103,44 @@ export class Game {
         const ballElem = ball.elem.getBoundingClientRect();
         const ballRadius = ballElem.width / 2;
 
-        // Calculate ball center coordinates
         const ballCenterX = ballElem.left + ballRadius;
         const ballCenterY = ballElem.top + ballRadius;
 
-        // Calculate ball boundaries
         const ballLeft = ballCenterX - ballRadius;
         const ballRight = ballCenterX + ballRadius;
         const ballTop = ballCenterY - ballRadius;
         const ballBottom = ballCenterY + ballRadius;
 
-        // Check for collision
         if (ballRight >= paddle.left &&
             ballLeft <= paddle.right &&
             ballBottom >= paddle.top &&
             ballTop <= paddle.bottom) {
 
-            // Calculate hit position relative to paddle center
             const paddleWidth = paddle.right - paddle.left;
             const paddleCenter = paddle.left + (paddleWidth / 2);
             const hitOffset = ballCenterX - paddleCenter;
-            const normalizedHitOffset = hitOffset / (paddleWidth / 2);  // Range: -1 to 1
+            const normalizedHitOffset = hitOffset / (paddleWidth / 2);
 
-            // Base speed and maximum angle (in radians)
             const baseSpeed = Math.sqrt(ball.vectx * ball.vectx + ball.vecty * ball.vecty);
-            const maxBounceAngle = Math.PI / 3; // 60 degrees
+            const maxBounceAngle = Math.PI / 3;
 
-            // Calculate new angle based on hit location
             const bounceAngle = normalizedHitOffset * maxBounceAngle;
 
-            // Calculate new velocity components
             ball.vectx = baseSpeed * Math.sin(bounceAngle);
             ball.vecty = -baseSpeed * Math.cos(bounceAngle);
 
-            // Add speed variation based on paddle movement (if paddle movement is tracked)
             if (this.paddle.velocity) {
                 ball.vectx += this.paddle.velocity * 0.2;
             }
 
-            // Add small random variation to prevent repetitive patterns
             const variation = (Math.random() - 0.5) * 0.2;
             ball.vectx += variation;
 
-            // Ensure minimum vertical speed to prevent horizontal stalling
             const minVerticalSpeed = baseSpeed * 0.5;
             if (Math.abs(ball.vecty) < minVerticalSpeed) {
                 ball.vecty = ball.vecty > 0 ? minVerticalSpeed : -minVerticalSpeed;
             }
 
-            // Prevent the ball from getting stuck in the paddle
             ball.elem.style.top = (paddle.top - ballElem.height - 1) + 'px';
         }
 
@@ -160,11 +154,9 @@ export class Game {
         const ballCenterX = ballElem.left + ballRadius;
         const ballCenterY = ballElem.top + ballRadius;
 
-        // Iterate over all live bricks
         this.bricksLive.forEach((brick, index) => {
             const brickRect = brick.elem.getBoundingClientRect();
 
-            // Check for collision
             if (
                 ballCenterX + ballRadius >= brickRect.left &&
                 ballCenterX - ballRadius <= brickRect.right &&
@@ -172,44 +164,83 @@ export class Game {
                 ballCenterY - ballRadius <= brickRect.bottom
             ) {
                 this.player.score += 10;
-                const score = document.querySelector('.score');
-                score.textContent = `${this.player.score}`;
-                // Determine the collision side
                 const overlapLeft = Math.abs(ballCenterX + ballRadius - brickRect.left);
                 const overlapRight = Math.abs(ballCenterX - ballRadius - brickRect.right);
                 const overlapTop = Math.abs(ballCenterY + ballRadius - brickRect.top);
                 const overlapBottom = Math.abs(ballCenterY - ballRadius - brickRect.bottom);
 
-                // Find the smallest overlap to determine the collision side
                 const minOverlap = Math.min(overlapLeft, overlapRight, overlapTop, overlapBottom);
 
                 if (minOverlap === overlapTop) {
-                    ball.vecty = -Math.abs(ball.vecty); // Ball hit the top of the brick
+                    ball.vecty = -Math.abs(ball.vecty);
                 } else if (minOverlap === overlapBottom) {
-                    ball.vecty = Math.abs(ball.vecty); // Ball hit the bottom of the brick
+                    ball.vecty = Math.abs(ball.vecty);
                 } else if (minOverlap === overlapLeft) {
-                    ball.vectx = -Math.abs(ball.vectx); // Ball hit the left side of the brick
+                    ball.vectx = -Math.abs(ball.vectx);
                 } else if (minOverlap === overlapRight) {
-                    ball.vectx = Math.abs(ball.vectx); // Ball hit the right side of the brick
+                    ball.vectx = Math.abs(ball.vectx);
                 }
 
-                // Remove the brick after collision
                 this.bricksLive.splice(index, 1);
-                // brick.isdetroyed();
                 brick.elem.style.visibility = "hidden";
             }
         });
     }
 
-    updateBallMovement() {
+    gameover() {
+        let dashbord = document.createElement('div');
+        dashbord.classList.add('game-over-dashboard');
 
+        let title = document.createElement('h1');
+        title.textContent = 'Game Over';
+        title.classList.add('game-over-title');
+
+        let scorebare = document.createElement('div');
+        scorebare.textContent = `Score: ${this.player.score}`;
+        scorebare.classList.add('game-over-score');
+
+        let restart = document.createElement('a');
+        restart.textContent = 'Play Again';
+        restart.href = '/src';
+        restart.classList.add('game-over-restart');
+
+        dashbord.appendChild(title);
+        dashbord.appendChild(scorebare);
+        dashbord.appendChild(restart);
+
+        const container = document.querySelector(".container");
+        container.appendChild(dashbord);
+
+        if (!document.getElementById('game-over-styles')) {
+            const styleSheet = document.createElement('style');
+            styleSheet.id = 'game-over-styles';
+            document.head.appendChild(styleSheet);
+        }
+    }
+    updateHeader() {
+        let header = document.querySelector('.header');
+        if (!header) {
+            header = document.createElement('div');
+            header.classList.add('header');
+            document.body.insertBefore(header, document.querySelector('.container'));
+        }
+
+        header.innerHTML = '';
+
+        const livesContainer = document.createElement('div');
+        livesContainer.classList.add('lives-container');
+        for (let i = 0; i < this.player.lives; i++) {
+            const heart = document.createElement('span');
+            heart.classList.add('heart');
+            heart.textContent = '❤️';
+            livesContainer.appendChild(heart);
+        }
+
+        const score = document.createElement('div');
+        score.textContent = `${this.player.score}`;
+
+        header.appendChild(score);
+        header.appendChild(livesContainer);
     }
 
-    isWin() {
-        return this.bricksLive.length === 0;
-    }
-
-    isgameover() {
-        return this.isLose;
-    }
 }

@@ -5,6 +5,7 @@ export class Player {
         this.game = null;
         this.menuButton = null;
         this.menuBar = null;
+        this.lives = 3;
     }
 
     listnermenu() {
@@ -39,15 +40,15 @@ export class Player {
                 }
             });
 
-            
+
             this.menuBar.appendChild(restart);
             this.menuBar.appendChild(continueBtn);
 
-           
+
             document.body.appendChild(this.menuBar);
         });
 
-       
+
         document.body.appendChild(this.menuButton);
 
 

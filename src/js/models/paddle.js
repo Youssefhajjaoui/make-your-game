@@ -1,6 +1,6 @@
 export class Paddle {
     constructor() {
-        this.x = 350;
+        this.x = 0;
         this.y = 0;
         this.elem = null;
         this.raduis = 50;
@@ -10,6 +10,7 @@ export class Paddle {
         let container = document.querySelector('.container');
         let paddle = document.createElement('div');
         paddle.className = "paddle";
+        this.x = (container.clientWidth /2);
         paddle.style.left = `${this.x}px`;
         container.append(paddle);
         this.elem = paddle;

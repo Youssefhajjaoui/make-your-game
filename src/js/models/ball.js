@@ -13,7 +13,7 @@ export class Ball {
         const ball = document.createElement('div');
         ball.className = "ball";
         this.x = container.clientWidth / 2;
-        this.y = container.clientHeight;
+        this.y = container.clientHeight / 2;
         ball.style.left = `${this.x}px`;
         ball.style.top = `${this.y}px`;
         container.append(ball);
