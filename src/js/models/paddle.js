@@ -23,7 +23,7 @@ export class Paddle {
         let paddleWidth = this.elem.getBoundingClientRect().width;
 
         // Ensure the paddle doesn't move beyond the right edge of the container
-        if (this.x + paddleWidth < containerWidth.width) {
+        if (this.x + paddleWidth < containerWidth.width + 48) {
             this.x += 20;
             this.elem.style.left = `${this.x}px`;
         }
@@ -32,7 +32,7 @@ export class Paddle {
     moveLeft() {
         let container = document.querySelector('.container');
         let containerWidth = container.getBoundingClientRect();
-        if (this.x > 0) {
+        if (this.x - 55 > 0) {
             this.x -= 20;
             this.elem.style.left = `${this.x}px`;
         }
