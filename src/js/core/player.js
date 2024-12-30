@@ -7,7 +7,7 @@ export class Player {
         this.info = container.infos
         this.game
 
-        this.health = 10
+        this.health = 5
         this.score = 0
         this.level = 1
         this.stats = []

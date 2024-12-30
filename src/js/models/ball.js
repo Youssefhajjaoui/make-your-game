@@ -8,7 +8,7 @@ export class Ball {
         this.directionY = -1
 
         this.size = 15
-        this.speed = 8
+        this.speed = 3
 
         this.event
         document.addEventListener('mousemove', (e) => {
@@ -19,6 +19,7 @@ export class Ball {
         })
 
         this.ball = this.createBall()
+        this.lastSwitchTime
     }
 
     calculateHitDirection(ballRect, surface) {
@@ -31,14 +32,22 @@ export class Ball {
     }
 
     changeDirection(surface) {
-        const ballRect = this.ball.getBoundingClientRect()
-        if (
-            ballRect.bottom >= surface.top &&
-            ballRect.right >= surface.left &&
-            ballRect.left <= surface.right
-        ) {
-            this.directionY *= -1
-            this.directionX = this.calculateHitDirection(ballRect, surface)
+        const now = Date.now();
+
+        if (!this.lastSwitchTime || now - this.lastSwitchTime >= 1000) {
+            const ballRect = this.ball.getBoundingClientRect();
+
+            if (
+                ballRect.right >= surface.left &&
+                ballRect.left <= surface.right &&
+                ballRect.bottom > surface.top &&
+                ballRect.top < surface.bottom
+            ) {
+                this.directionY *= -1
+                this.directionX = this.calculateHitDirection(ballRect, surface)
+
+                this.lastSwitchTime = now
+            }
         }
     }
 
