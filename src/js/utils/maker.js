@@ -2,14 +2,19 @@ export const createContainers = () => {
     document.body.querySelectorAll('*').forEach(elem=>{
         elem.remove()
     })
+    const gameMsg = makeDiv('game-msg', document.body)
+    const infos = makeDiv('infos', document.body)
+    const container = makeDiv('container', document.body)
+    const brickContainer = makeDiv('bricks-container', container)
+    const paddleContainer = makeDiv('paddle-container', container)
+    const paddle = makeDiv('paddle', paddleContainer)
     return {
-        gameMsg: makeDiv('game-msg', document.body),
-        infos:makeDiv('infos', document.body),
-        container: makeDiv('container', document.body),
-        brickContainer: makeDiv('bricks-container', document.querySelector('.container')),
-        space: makeDiv('space', document.querySelector('.container')),
-        paddleContainer: makeDiv('paddle-container', document.querySelector('.container')),
-        paddle: makeDiv('paddle', document.querySelector('.paddle-container'))
+        gameMsg,
+        infos,
+        container,
+        brickContainer,
+        paddleContainer,
+        paddle,
     }
 }
 
