@@ -13,14 +13,20 @@
         <div class="header">
             <div class="lives-container"></div>
             <div class="score">0</div>
+            <div class="level">1</div>
+            <button class="menu-button">menu</button>
         </div>
         <div class="game-container"></div>
-        <div class="game-over-dashboard" style="display: none">
+    </div>
+    <div id="game-over-dashboard" class="menu-bar" style="display: none;">
             <h1 class="game-over-title">Game Over</h1>
             <div class="game-over-score"></div>
             <a href="/src" class="game-over-restart">Play Again</a>
         </div>
-    </div>
+        <div class="menu-bar" style="display: none">
+            <a href="/src" class="menu-item">restart</a>
+            <button class="menu-item">continue</button>
+        </div>
     <script type="module" src="js/core/main.js"></script>
 </body>
 

@@ -184,7 +184,7 @@ export class Game {
     }
 
     gameover() {
-        let dashbord = document.querySelector('.game-over-dashboard');
+        let dashbord = document.getElementById('game-over-dashboard');
         let score = dashbord.querySelector('.game-over-score');
         score.textContent = `Score: ${this.player.score}`;
         dashbord.style.display = 'block';

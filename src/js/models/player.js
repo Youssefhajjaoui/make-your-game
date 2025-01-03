@@ -3,22 +3,17 @@ export class Player {
         this.score = 0;
         this.ispause = false;
         this.game = null;
-        this.menuButton = null;
+        this.menuButton = document.querySelector('.menu-button');
         this.menuBar = null;
         this.lives = 3;
     }
 
     listnermenu() {
-        if (this.menuButton) {
-            this.menuButton.remove();
-        }
-
-        this.menuButton = document.createElement('button');
-        this.menuButton.textContent = 'menu';
-        this.menuButton.classList.add('menu-button');
-
         this.menuButton.addEventListener('click', () => {
-            this.game.isPaused = true;
+            // if (this.game.isPaused) {
+            //     return
+            // }
+            // this.game.isPaused = true;
 
             // Create the menu bar
             this.menuBar = document.createElement('div');
