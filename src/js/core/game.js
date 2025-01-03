@@ -12,17 +12,20 @@ export class Game {
         this.paddle = null;
         this.ball = null;
         this.player = null;
+        this.container = document.querySelector('.container');
+        this.score = document.querySelector('.score');
+        this.livesContainer = document.querySelector('.lives-container');
+        this.gameContainer = document.querySelector('.game-container');
     }
 
     setup(numOfLevel) {
-        let container = document.querySelector('.container');
-        container.className = 'container';
+        this.updateHeader();
         const paddle = new Paddle();
         const paddlelem = paddle.renderPaddle();
         const ball = new Ball();
         const ballelem = ball.renderBall();
-        container.append(paddlelem);
-        container.append(ballelem);
+        this.gameContainer.append(paddlelem);
+        this.gameContainer.append(ballelem);
         const board = levels[numOfLevel];
         this.bricksLive = board.flatMap((row, i) =>
             row.map((brickType, j) => {
@@ -30,20 +33,19 @@ export class Game {
                     const brick = new Brick();
                     const brickelem = brick.renderBrick();
                     brick.type = brickType;
-                    container.appendChild(brickelem);
+                    this.gameContainer.appendChild(brickelem);
                     brickelem.style.visibility = 'hidden';
                     return null
                 };
                 const brick = new Brick();
                 const brickelem = brick.renderBrick();
                 brick.type = brickType;
-                container.appendChild(brickelem);
+                this.gameContainer.appendChild(brickelem);
                 return brick;
             }).filter(brick => brick !== null)
         );
         this.paddle = paddle;
         this.ball = ball;
-        document.body.append(container);
         return { paddle, ball };
     }
 
@@ -53,8 +55,7 @@ export class Game {
     }
 
     collisionswithcontainer() {
-        const container = document.querySelector(".container");
-        const containerRect = container.getBoundingClientRect();
+        const containerRect = this.gameContainer.getBoundingClientRect();
         const ball = this.ball;
 
         const rightBound = containerRect.width - ball.radius * 2;
@@ -183,59 +184,21 @@ export class Game {
     }
 
     gameover() {
-        let dashbord = document.createElement('div');
-        dashbord.classList.add('game-over-dashboard');
-
-        let title = document.createElement('h1');
-        title.textContent = 'Game Over';
-        title.classList.add('game-over-title');
-
-        let scorebare = document.createElement('div');
-        scorebare.textContent = `Score: ${this.player.score}`;
-        scorebare.classList.add('game-over-score');
-
-        let restart = document.createElement('a');
-        restart.textContent = 'Play Again';
-        restart.href = '/src';
-        restart.classList.add('game-over-restart');
-
-        dashbord.appendChild(title);
-        dashbord.appendChild(scorebare);
-        dashbord.appendChild(restart);
-
-        const container = document.querySelector(".container");
-        container.appendChild(dashbord);
-
-        if (!document.getElementById('game-over-styles')) {
-            const styleSheet = document.createElement('style');
-            styleSheet.id = 'game-over-styles';
-            document.head.appendChild(styleSheet);
-        }
+        let dashbord = document.querySelector('.game-over-dashboard');
+        let score = dashbord.querySelector('.game-over-score');
+        score.textContent = `Score: ${this.player.score}`;
+        dashbord.style.display = 'block';
     }
     updateHeader() {
-        let header = document.querySelector('.header');
-        if (!header) {
-            header = document.createElement('div');
-            header.classList.add('header');
-            document.body.insertBefore(header, document.querySelector('.container'));
-        }
-
-        header.innerHTML = '';
-
-        const livesContainer = document.createElement('div');
-        livesContainer.classList.add('lives-container');
+        this.livesContainer.innerHTML = '';
         for (let i = 0; i < this.player.lives; i++) {
-            const heart = document.createElement('span');
-            heart.classList.add('heart');
-            heart.textContent = '❤️';
-            livesContainer.appendChild(heart);
+            const life = document.createElement('img');
+            life.classList.add('heart');
+            life.src = 'assets/icons/life.png';
+            this.livesContainer.appendChild(life);
         }
+        this.score.textContent = `Score: ${this.player.score}`;
 
-        const score = document.createElement('div');
-        score.textContent = `${this.player.score}`;
-
-        header.appendChild(score);
-        header.appendChild(livesContainer);
     }
     iswin() {
         return this.bricksLive.length === 0;

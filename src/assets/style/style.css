@@ -6,8 +6,12 @@ body {
     padding: 0;
 }
 
+img {
+    width: 30px;
+    height: auto;
+}
 
-.container {
+.game-container {
     position: relative;
     width: 80vw;
     height: 80vh;
@@ -16,6 +20,16 @@ body {
     overflow: hidden;
 }
 
+.header {
+    height: 5vh;
+    width: 100%;
+    background-color: #333;
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1;
+}
 .brick {
     width: 50px;
     height: 20px;
@@ -86,17 +100,7 @@ body {
     transform: translateY(0);
 }
 
-@keyframes slideIn {
-    0% {
-        opacity: 0;
-        transform: translate(-50%, -40%);
-    }
 
-    100% {
-        opacity: 1;
-        transform: translate(-50%, -50%);
-    }
-}
 
 /* Make sure container is properly positioned for absolute positioning */
 .container {
@@ -167,47 +171,11 @@ body {
 }
 
 .ball {
-    width: 1.5%;
-    /* Scales with screen size */
-    height: 1.5%;
-    min-width: 10px;
-    /* Minimum size */
-    min-height: 10px;
-    max-width: 20px;
-    /* Maximum size */
-    max-height: 20px;
+    width: 1vw;
+    height: 1vw;
     background-color: #FFD700;
     position: absolute;
-    bottom: 30%;
-    /* Adjust as needed for starting position */
-    left: 50%;
-    transform: translateX(-50%);
-    border-radius: 50%;
-    animation: bounce 2s infinite ease-in-out;
-}
-
-@keyframes bounce {
-
-    0%,
-    100% {
-        transform: translateX(-50%) translateY(0);
-    }
-
-    50% {
-        transform: translateX(-50%) translateY(-50px);
-        /* Height of the bounce */
-    }
+    border-radius: 15px;
 }
 
 
-@keyframes bounce {
-
-    0%,
-    100% {
-        transform: translate(-50%, -50%);
-    }
-
-    50% {
-        transform: translate(-50%, -70%);
-    }
-}

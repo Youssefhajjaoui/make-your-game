@@ -27,10 +27,7 @@ export function updateGameState(game) {
         game.gameover();
         return;
     } else if (game.iswin()) {
-        let container = document.querySelector('.container');
-        if (container) {
-            container.textContent = '';
-        }
+        game.gameContainer.innerHTML = '';
         currentLevel++;
         game.setup(currentLevel);
         game.player.listnermenu();
