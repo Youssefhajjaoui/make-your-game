@@ -39,6 +39,7 @@ export function updateGameState(game) {
         game.currentLevel++;
         game.setupbricks();
         game.ball.reset();
+        game.updateHeader();
         game.isPaused = true;
     }
 

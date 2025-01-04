@@ -71,7 +71,7 @@ export class Game {
         let newDx = ball.vectx;
         let newDy = ball.vecty;
 
-        if (ball.x >= rightBound) {
+        if (ball.x + ball.radius >= rightBound) {
             ball.x = rightBound;
             newDx = -Math.abs(newDx);
         }
