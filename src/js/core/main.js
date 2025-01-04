@@ -37,8 +37,7 @@ export function updateGameState(game) {
         return;
     } else if (game.iswin()) {
         game.gameContainer.innerHTML = '';
-        currentLevel++;
-        game.setup(currentLevel);
+        game.setup(++currentLevel);
         game.player.listnermenu();
         game.paddle.listener();
         game.isPaused = true;
