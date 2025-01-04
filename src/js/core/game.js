@@ -29,6 +29,11 @@ export class Game {
         const ballelem = ball.renderBall();
         this.gameContainer.append(paddlelem);
         this.gameContainer.append(ballelem);
+        let ballrect = ballelem.getBoundingClientRect();
+        let pdRect = paddlelem.getBoundingClientRect();
+        ballelem.style.left = `${pdRect.right - (pdRect.width / 2)- (ballrect.width/2)}px`;
+        ballelem.style.top = `${paddle.rect.top-ballrect.height}px`;
+        paddle.listener();
         this.setupbricks();
         this.paddle = paddle;
         this.ball = ball;

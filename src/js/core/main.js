@@ -11,13 +11,16 @@ export function main() {
 
     game.setup();
     player.listnermenu();
-    game.paddle.listener();
-
     requestAnimationFrame(() => updateGameState(game));
 }
 
 export function updateGameState(game) {
     if (game.isPaused) {
+        if (game.overlay.style.display === 'block') {
+            game.paddle.removeListener('keydown', game.paddle.keyDownHandler);
+        }else {
+            game.paddle.listener('keydown', game.paddle.keyDownHandler);
+        }
         const startGame = (event) => {
             if (event.code === "Space") {
                 game.isPaused = false;

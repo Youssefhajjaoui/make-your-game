@@ -45,18 +45,23 @@ export class Paddle {
         }
     }
 
-    listener() {
-        document.addEventListener('keydown', (event) => {
 
-            switch (event.key) {
-                case "ArrowLeft":
-                    this.moveLeft();
-                    break;
-                case "ArrowRight":
-                    this.moveRight();
-                    break;
-            }
-            //  console.log(this.x, this.y);
-        })
+    keyDownHandler = (event) => {
+        switch (event.key) {
+            case "ArrowLeft":
+                this.moveLeft();
+                break;
+            case "ArrowRight":
+                this.moveRight();
+                break;
+        }
+    }
+
+    listener() {
+        document.addEventListener('keydown', this.keyDownHandler);
+    }
+
+    removeListener() {
+        document.removeEventListener('keydown', this.keyDownHandler);
     }
 }

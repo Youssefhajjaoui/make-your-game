@@ -15,7 +15,6 @@ export class Player {
             this.menuBar.style.display = 'block';   
             const closeMenu = () => {
                 console.log('close');
-                this.game.isPaused = false;
                 this.overlay.style.display = 'none';
                 this.menuBar.style.display = 'none';
             };
@@ -32,17 +31,5 @@ export class Player {
             document.addEventListener('keydown', handleSpaceKey);
         });
 
-    }
-
-
-    cleanupMenu() {
-        if (this.menuButton) {
-            this.menuButton.remove();
-            this.menuButton = null;
-        }
-        if (this.menuBar) {
-            this.menuBar.remove();
-            this.menuBar = null;
-        }
     }
 }

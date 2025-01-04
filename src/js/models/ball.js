@@ -8,12 +8,12 @@ export class Ball {
         this.radius = 7;
     }
 
-    renderBall() {
+    renderBall(x, y) {
         let container = document.querySelector('.container');
         const ball = document.createElement('div');
         ball.className = "ball";
-        this.x = container.clientWidth / 2;
-        this.y = container.clientHeight / 2;
+        this.x =x;
+        this.y = y;
         ball.style.left = `${this.x}px`;
         ball.style.top = `${this.y}px`;
         container.append(ball);
@@ -44,7 +44,7 @@ export class Ball {
         this.x = window.innerWidth / 2;
         this.y = window.innerHeight / 2;
         this.vectx = 0;
-        this.vecty = 2;
+        this.vecty = -5;
         this.elem.style.left = `${this.x}px`;
         this.elem.style.top = `${this.y}px`;
     }
