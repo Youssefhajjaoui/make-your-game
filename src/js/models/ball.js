@@ -4,7 +4,7 @@ export class Ball {
         this.y = 0;
         this.elem = null;
         this.vectx = 0;
-        this.vecty = 2;
+        this.vecty = -16;
         this.radius = 7;
     }
 
@@ -44,7 +44,7 @@ export class Ball {
         this.x = window.innerWidth / 2;
         this.y = window.innerHeight / 2;
         this.vectx = 0;
-        this.vecty = -5;
+        this.vecty = 2;
         this.elem.style.left = `${this.x}px`;
         this.elem.style.top = `${this.y}px`;
     }
