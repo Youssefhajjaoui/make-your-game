@@ -4,8 +4,7 @@ export class Ball {
         this.y = 0;
         this.elem = null;
         this.vectx = 0;
-        this.vecty = 2;
-        this.radius = 7;
+        this.vecty = 1.5;
     }
 
     renderBall() {

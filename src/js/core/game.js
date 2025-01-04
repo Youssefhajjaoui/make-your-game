@@ -64,29 +64,23 @@ export class Game {
     collisionswithcontainer() {
         const containerRect = this.gameContainer.getBoundingClientRect();
         const ball = this.ball;
-
-        const rightBound = containerRect.width - ball.radius * 2;
-        const bottomBound = containerRect.height - ball.radius * 2;
-
+        let border = 0.005 * window.innerHeight;
         let newDx = ball.vectx;
         let newDy = ball.vecty;
 
-        if (ball.x + ball.radius >= rightBound) {
-            ball.x = rightBound;
+        if (ball.x + ball.elem.getBoundingClientRect().width >= containerRect.right - border) {
             newDx = -Math.abs(newDx);
         }
 
-        if (ball.x <= 0) {
-            ball.x = 0;
+        if (ball.x <= containerRect.left + border) {
             newDx = Math.abs(newDx);
         }
 
-        if (ball.y <= 0) {
-            ball.y = 0;
+        if (ball.y <= containerRect.top + border) {
             newDy = Math.abs(newDy);
         }
 
-        if (ball.y >= bottomBound) {
+        if (ball.y + ball.elem.getBoundingClientRect().width >= containerRect.bottom - border) {
             this.player.lives--;
             ball.elem.remove();
             this.ball = new Ball;

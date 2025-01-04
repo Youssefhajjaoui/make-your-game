@@ -23,7 +23,7 @@ img {
     width: 100%;
     height: 100%;
     margin: 0 0.5vh;
-    box-sizing: border-box;
+    /* box-sizing: border-box; */
     overflow: hidden;
 }
 
@@ -46,6 +46,7 @@ img {
     grid-template-columns: repeat(14, 0.5fr);
     grid-template-rows: repeat(7, 1fr);
 }
+
 .header {
     height: 5vh;
     padding: 0 0.5vw;
@@ -71,7 +72,7 @@ img {
 }
 
 /* Game Over Dashboard */
-.menu-bar{
+.menu-bar {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -135,7 +136,7 @@ img {
     background-color: #FFD700;
     position: absolute;
     border-radius: 50%;
-    box-shadow: 0 0.5vh 1vh rgba(255, 215, 0, 0.8);
+    /* box-shadow: 0 0.5vh 1vh rgba(255, 215, 0, 0.8); */
 }
 
 /* Menu */
@@ -156,7 +157,7 @@ img {
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: rgba(0, 0, 0, 0.5); 
-    z-index: 2; 
-    display: none; 
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 2;
+    display: none;
 }
