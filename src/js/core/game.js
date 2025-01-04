@@ -14,11 +14,14 @@ export class Game {
         this.player = null;
         this.container = document.querySelector('.container');
         this.score = document.querySelector('.score');
+        this.level = document.querySelector('.level');
         this.livesContainer = document.querySelector('.lives-container');
         this.gameContainer = document.querySelector('.game-container');
+        this.bricksContainer = document.querySelector('.bricks-container');
+        this.overlay = document.querySelector('.overlay');
     }
 
-    setup(numOfLevel) {
+    setup() {
         this.updateHeader();
         const paddle = new Paddle();
         const paddlelem = paddle.renderPaddle();
@@ -26,21 +29,21 @@ export class Game {
         const ballelem = ball.renderBall();
         this.gameContainer.append(paddlelem);
         this.gameContainer.append(ballelem);
-        const board = levels[numOfLevel];
+        const board = levels[this.currentLevel];
         this.bricksLive = board.flatMap((row, i) =>
             row.map((brickType, j) => {
                 if (brickType === 0) {
                     const brick = new Brick();
                     const brickelem = brick.renderBrick();
                     brick.type = brickType;
-                    this.gameContainer.appendChild(brickelem);
+                    this.bricksContainer.appendChild(brickelem);
                     brickelem.style.visibility = 'hidden';
                     return null
                 };
                 const brick = new Brick();
                 const brickelem = brick.renderBrick();
                 brick.type = brickType;
-                this.gameContainer.appendChild(brickelem);
+                this.bricksContainer.appendChild(brickelem);
                 return brick;
             }).filter(brick => brick !== null)
         );
@@ -56,6 +59,7 @@ export class Game {
 
     collisionswithcontainer() {
         const containerRect = this.gameContainer.getBoundingClientRect();
+        
         const ball = this.ball;
 
         const rightBound = containerRect.width - ball.radius * 2;
@@ -188,6 +192,7 @@ export class Game {
         let score = dashbord.querySelector('.game-over-score');
         score.textContent = `Score: ${this.player.score}`;
         dashbord.style.display = 'block';
+        this.overlay.style.display = 'block';
     }
     updateHeader() {
         this.livesContainer.innerHTML = '';
@@ -198,6 +203,7 @@ export class Game {
             this.livesContainer.appendChild(life);
         }
         this.score.textContent = `Score: ${this.player.score}`;
+        this.level.textContent = `Level: ${this.currentLevel}`;
 
     }
     iswin() {

@@ -1,60 +1,37 @@
 export class Player {
     constructor() {
         this.score = 0;
-        this.ispause = false;
         this.game = null;
         this.menuButton = document.querySelector('.menu-button');
-        this.menuBar = null;
+        this.menuBar = document.getElementById('pause-dashboard');
         this.lives = 3;
+        this.overlay = document.querySelector('.overlay');
     }
 
     listnermenu() {
         this.menuButton.addEventListener('click', () => {
-            // if (this.game.isPaused) {
-            //     return
-            // }
-            // this.game.isPaused = true;
-
-            // Create the menu bar
-            this.menuBar = document.createElement('div');
-            this.menuBar.classList.add('menu-bar');
-
-            const restart = document.createElement('a');
-            restart.href = '/src';
-            restart.textContent = 'restart';
-            restart.classList.add('menu-item');
-
-            const continueBtn = document.createElement('button');
-            continueBtn.textContent = 'continue';
-            continueBtn.classList.add('menu-item');
-
-
+            this.game.isPaused = true;
+            this.overlay.style.display = 'block';
+            this.menuBar.style.display = 'block';   
             const closeMenu = () => {
+                console.log('close');
                 this.game.isPaused = false;
-                if (this.menuBar) {
-                    this.menuBar.remove();
-                    this.menuBar = null;
-                }
-                document.removeEventListener('keydown', handleSpaceKey);
-                return
+                this.overlay.style.display = 'none';
+                this.menuBar.style.display = 'none';
             };
             const handleSpaceKey = (event) => {
                 if (event.code === "Space") {
                     closeMenu();
                 }
             };
-
-            continueBtn.addEventListener('click', closeMenu);
+            console.log(this.menuBar);
+            this.menuBar.querySelector('#restart').addEventListener('click', ()=>{
+                window.location.reload();
+            });
+           this.menuBar.querySelector('#continue').addEventListener('click', closeMenu);
             document.addEventListener('keydown', handleSpaceKey);
-
-
-            this.menuBar.appendChild(restart);
-            this.menuBar.appendChild(continueBtn);
-
-            document.body.appendChild(this.menuBar);
         });
 
-        document.body.appendChild(this.menuButton);
     }
 
 

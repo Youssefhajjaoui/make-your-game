@@ -5,7 +5,7 @@ let currentLevel = 1;
 
 export function main() {
     const player = new Player();
-    const game = new Game();
+    const game = new Game(currentLevel);
     player.game = game;
     game.player = player;
     game.isPaused = true;
@@ -18,6 +18,15 @@ export function main() {
 }
 
 export function updateGameState(game) {
+    if (game.isPaused) {
+        const startGame = (event) => {
+            if (event.code === "Space") {
+                game.isPaused = false;
+                document.removeEventListener('keydown', startGame);
+            }
+        }
+        document.addEventListener('keydown', startGame);
+    }
     if (!game.isPaused && game.player.lives > 0 && !game.iswin()) {
         game.collisionWithBricks();
         game.collisionswithcontainer();
@@ -35,17 +44,10 @@ export function updateGameState(game) {
         game.isPaused = true;
     }
 
-    if (game.isPaused && !document.querySelector('.menu-bar')) {
-        document.addEventListener('keydown', function startGame(event) {
-            if (event.code === "Space") {
-                game.isPaused = false;
-                document.removeEventListener('keydown', startGame);
-                requestAnimationFrame(() => updateGameState(game));
-            }
-        });
-    } else {
-        requestAnimationFrame(() => updateGameState(game));
-    }
+
+    // } else {
+    requestAnimationFrame(() => updateGameState(game));
+    // }
 }
 
 main();
