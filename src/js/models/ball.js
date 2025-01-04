@@ -43,6 +43,8 @@ export class Ball {
     reset() {
         this.x = window.innerWidth / 2;
         this.y = window.innerHeight / 2;
+        this.vectx = 0;
+        this.vecty = 2;
         this.elem.style.left = `${this.x}px`;
         this.elem.style.top = `${this.y}px`;
     }

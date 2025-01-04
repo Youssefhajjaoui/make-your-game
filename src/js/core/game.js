@@ -4,11 +4,11 @@ import { Paddle } from "../models/paddle.js";
 import { levels } from "./utils.js";
 
 export class Game {
-    constructor(numLevel) {
+    constructor() {
         this.isPaused = false;
         this.isLose = false;
         this.bricksLive = [];
-        this.currentLevel = numLevel;
+        this.currentLevel = 1;
         this.paddle = null;
         this.ball = null;
         this.player = null;
@@ -29,6 +29,13 @@ export class Game {
         const ballelem = ball.renderBall();
         this.gameContainer.append(paddlelem);
         this.gameContainer.append(ballelem);
+        this.setupbricks();
+        this.paddle = paddle;
+        this.ball = ball;
+        return { paddle, ball };
+    }
+
+    setupbricks() {
         const board = levels[this.currentLevel];
         this.bricksLive = board.flatMap((row, i) =>
             row.map((brickType, j) => {
@@ -47,9 +54,6 @@ export class Game {
                 return brick;
             }).filter(brick => brick !== null)
         );
-        this.paddle = paddle;
-        this.ball = ball;
-        return { paddle, ball };
     }
 
     update() {
@@ -59,7 +63,6 @@ export class Game {
 
     collisionswithcontainer() {
         const containerRect = this.gameContainer.getBoundingClientRect();
-        
         const ball = this.ball;
 
         const rightBound = containerRect.width - ball.radius * 2;

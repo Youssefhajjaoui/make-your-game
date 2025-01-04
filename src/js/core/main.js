@@ -1,16 +1,15 @@
 import { Player } from "../models/player.js";
 import { Game } from "./game.js";
 
-let currentLevel = 1;
 
 export function main() {
     const player = new Player();
-    const game = new Game(currentLevel);
+    const game = new Game();
     player.game = game;
     game.player = player;
     game.isPaused = true;
 
-    game.setup(currentLevel);
+    game.setup();
     player.listnermenu();
     game.paddle.listener();
 
@@ -36,11 +35,10 @@ export function updateGameState(game) {
         game.gameover();
         return;
     } else if (game.iswin()) {
-        game.gameContainer.innerHTML = '';
-        currentLevel++;
-        game.setup(currentLevel);
-        game.player.listnermenu();
-        game.paddle.listener();
+        game.bricksContainer.innerHTML = '';
+        game.currentLevel++;
+        game.setupbricks();
+        game.ball.reset();
         game.isPaused = true;
     }
 
