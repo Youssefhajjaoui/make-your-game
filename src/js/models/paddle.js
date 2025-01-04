@@ -10,7 +10,7 @@ export class Paddle {
         let container = document.querySelector('.game-container');
         let paddle = document.createElement('div');
         paddle.className = "paddle";
-        this.x = (container.clientWidth /2);
+        this.x = (container.clientWidth / 2);
         this.y = (container.clientHeight);
         paddle.style.left = `${this.x}px`;
         paddle.style.top = `${this.y}px`;
@@ -24,12 +24,13 @@ export class Paddle {
         let container = document.querySelector('.game-container');
         let containerRect = container.getBoundingClientRect();
         let paddleWidth = this.rect.width;
-        console.log("paddleWidth:",paddleWidth);
-        console.log("containerWidth:",containerRect.width);
-        console.log("this.x:",this.x);
+        console.log(window.innerWidth);
+        let speed = (window.innerWidth * 40) / 2700;
+        // console.log("containerWidth:", containerRect.width);
+        // console.log("this.x:", this.x);
         // Ensure the paddle doesn't move beyond the right edge of the container
-        if (this.x <= containerRect.width- (paddleWidth /2)) {
-            this.x += 2;
+        if (this.x < (containerRect.x + containerRect.width) - paddleWidth) {
+            this.x += speed;
             this.elem.style.left = `${this.x}px`;
         }
     }
@@ -37,8 +38,9 @@ export class Paddle {
     moveLeft() {
         let container = document.querySelector('.game-container');
         let containerRect = container.getBoundingClientRect();
-        if (this.x > 0) {
-            this.x -= 20;
+        let speed = (window.innerWidth * 40) / 2700;
+        if (this.x > containerRect.x) {
+            this.x -= speed;
             this.elem.style.left = `${this.x}px`;
         }
     }
@@ -54,7 +56,7 @@ export class Paddle {
                     this.moveRight();
                     break;
             }
-            console.log(this.x, this.y);
+            //  console.log(this.x, this.y);
         })
     }
 }
