@@ -14,9 +14,9 @@ export class Ball {
         ball.className = "ball";
         this.x =x;
         this.y = y;
+        container.append(ball); 
         ball.style.left = `${this.x}px`;
         ball.style.top = `${this.y}px`;
-        container.append(ball);
         this.elem = ball;
         return ball
     }
