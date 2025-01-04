@@ -9,13 +9,15 @@ export class Paddle {
 
     renderPaddle() {
         let container = document.querySelector('.game-container');
+        let containerrect = container.getBoundingClientRect();
         let paddle = document.createElement('div');
         paddle.className = "paddle";
-        this.x = (container.clientWidth / 2);
+        container.append(paddle);
+        let paddlerect = paddle.getBoundingClientRect();
+        this.x = (containerrect.right - (containerrect.width) / 2) - (paddlerect.width / 2)
         this.y = (container.clientHeight);
         paddle.style.left = `${this.x}px`;
         paddle.style.top = `${this.y}px`;
-        container.append(paddle);
         this.elem = paddle;
         this.rect = paddle.getBoundingClientRect();
         return paddle;
@@ -29,7 +31,7 @@ export class Paddle {
         // Ensure the paddle doesn't move beyond the right edge of the container
         if (this.x < (containerRect.right) - paddleWidth) {
             this.x += left;
-            this.elem.style.left = `${Math.min(this.x, (containerRect.right-paddleWidth))}px`;
+            this.elem.style.left = `${Math.min(this.x, (containerRect.right - paddleWidth))}px`;
         }
     }
 
