@@ -166,7 +166,6 @@ export class Game {
                 const overlapRight = Math.abs(ballCenterX - ballRadius - brickRect.right);
                 const overlapTop = Math.abs(ballCenterY + ballRadius - brickRect.top);
                 const overlapBottom = Math.abs(ballCenterY - ballRadius - brickRect.bottom);
-
                 const minOverlap = Math.min(overlapLeft, overlapRight, overlapTop, overlapBottom);
 
                 if (minOverlap === overlapTop) {
@@ -207,4 +206,23 @@ export class Game {
     iswin() {
         return this.bricksLive.length === 0;
     }
+    listenertoreseize() {
+        const reloadOnResize = debounce(() => {
+            window.location.reload();
+        }, 200); 
+
+        window.addEventListener('resize', reloadOnResize);
+    }
+
+
+}
+
+function debounce(func, delay) {
+    let timeout;
+    return (...args) => {
+        clearTimeout(timeout); 
+        timeout = setTimeout(() => {
+            func(...args);
+        }, delay); 
+    };
 }

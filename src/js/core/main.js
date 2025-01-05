@@ -8,7 +8,7 @@ export function main() {
     player.game = game;
     game.player = player;
     game.isPaused = true;
-
+    game.listenertoreseize();
     game.setup();
     player.listnermenu();
     requestAnimationFrame(() => updateGameState(game));
@@ -18,7 +18,7 @@ export function updateGameState(game) {
     if (game.isPaused) {
         if (game.overlay.style.display === 'block') {
             game.paddle.removeListener('keydown', game.paddle.keyDownHandler);
-        }else {
+        } else {
             game.paddle.listener('keydown', game.paddle.keyDownHandler);
         }
         const startGame = (event) => {
