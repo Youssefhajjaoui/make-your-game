@@ -213,8 +213,6 @@ export class Game {
 
         window.addEventListener('resize', reloadOnResize);
     }
-
-
 }
 
 function debounce(func, delay) {

@@ -20,6 +20,7 @@ export function updateGameState(game) {
             game.paddle.removeListener('keydown', game.paddle.keyDownHandler);
         } else {
             game.paddle.listener('keydown', game.paddle.keyDownHandler);
+            game.ball.reset();
         }
         const startGame = (event) => {
             if (event.code === "Space") {
@@ -45,11 +46,7 @@ export function updateGameState(game) {
         game.updateHeader();
         game.isPaused = true;
     }
-
-
-    // } else {
     requestAnimationFrame(() => updateGameState(game));
-    // }
 }
 
 main();
