@@ -12,9 +12,13 @@ export class Ball {
         let container = document.querySelector('.container');
         const ball = document.createElement('div');
         ball.className = "ball";
-        this.x =x;
+        this.x = x;
         this.y = y;
-        container.append(ball); 
+        container.append(ball);
+        const paddlelem = document.querySelector(".paddle");
+        let ballrect = ball.getBoundingClientRect();
+        let pdRect = paddlelem.getBoundingClientRect();
+        this.x = pdRect.right - (pdRect.width / 2) - (ballrect.width / 2), this.y = pdRect.top - ballrect.height;
         ball.style.left = `${this.x}px`;
         ball.style.top = `${this.y}px`;
         this.elem = ball;
@@ -30,21 +34,21 @@ export class Ball {
     }
 
     move(vectx, vecty) {
-        // Update coordinates
         this.x += vectx;
         this.y += vecty;
 
-        // Update element position
         this.elem.style.left = `${this.x}px`;
         this.elem.style.top = `${this.y}px`;
     }
 
     // Optional: method to reset position
     reset() {
-        this.x = window.innerWidth / 2;
-        this.y = window.innerHeight / 2;
+        const paddlelem = document.querySelector(".paddle");
+        let ballrect = this.elem.getBoundingClientRect();
+        let pdRect = paddlelem.getBoundingClientRect();
+        this.x = pdRect.right - (pdRect.width / 2) - (ballrect.width / 2), this.y = pdRect.top - ballrect.height;
         this.vectx = 0;
-        this.vecty = 2;
+        this.vecty = 5;
         this.elem.style.left = `${this.x}px`;
         this.elem.style.top = `${this.y}px`;
     }
