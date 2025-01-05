@@ -16,6 +16,7 @@ export function main() {
 
 export function updateGameState(game) {
     if (game.isPaused) {
+        game.stopchrono();
         if (game.overlay.style.display === 'block') {
             game.paddle.removeListener('keydown', game.paddle.keyDownHandler);
         } else {
@@ -25,6 +26,7 @@ export function updateGameState(game) {
         const startGame = (event) => {
             if (event.code === "Space") {
                 game.isPaused = false;
+                game.addchrono();
                 document.removeEventListener('keydown', startGame);
             }
         }
@@ -37,6 +39,7 @@ export function updateGameState(game) {
         game.updateHeader();
     } else if (game.player.lives === 0) {
         game.gameover();
+        game.stopchrono();
         return;
     } else if (game.iswin()) {
         game.bricksContainer.innerHTML = '';
@@ -44,6 +47,7 @@ export function updateGameState(game) {
         game.setupbricks();
         game.ball.reset();
         game.updateHeader();
+        game.stopchrono();
         game.isPaused = true;
     }
     requestAnimationFrame(() => updateGameState(game));
