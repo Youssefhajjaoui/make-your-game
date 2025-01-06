@@ -59,7 +59,7 @@ export class Game {
 
     update() {
         this.checkCollisions();
-        this.updateBallMovement();
+        // this.updateBallMovement();
     }
 
     collisionswithcontainer() {
@@ -185,6 +185,7 @@ export class Game {
     }
 
     gameover() {
+        this.isLose=true;
         let dashbord = document.getElementById('game-over-dashboard');
         let score = dashbord.querySelector('.game-over-score');
         score.textContent = `Score: ${this.player.score}`;

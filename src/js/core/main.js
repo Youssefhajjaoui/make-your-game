@@ -29,6 +29,9 @@ export function updateGameState(game) {
             }
         }
         document.addEventListener('keydown', startGame);
+    }else if (game.isLose) {
+        document.removeEventListener('keydown', startGame);
+        return
     }
     if (!game.isPaused && game.player.lives > 0 && !game.iswin()) {
         game.collisionWithBricks();
@@ -37,7 +40,6 @@ export function updateGameState(game) {
         game.updateHeader();
     } else if (game.player.lives === 0) {
         game.gameover();
-        return;
     } else if (game.iswin()) {
         game.bricksContainer.innerHTML = '';
         game.currentLevel++;

@@ -18,18 +18,11 @@ img {
     height: auto;
 }
 
-.paddle-container {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    margin: 0 0.5vh;
-    /* box-sizing: border-box; */
-    overflow: hidden;
-}
+
 
 /* Game Container */
 .game-container {
-    width: 80vw;
+    width: 80vh;
     height: 80vh;
     border: #5ACCE5 dashed 0.5vh;
     padding: 0;
@@ -43,7 +36,7 @@ img {
 /* Header */
 .bricks-container {
     display: grid;
-    grid-template-columns: repeat(14, 0.5fr);
+    grid-template-columns: repeat(8, 1fr);
     grid-template-rows: repeat(7, 1fr);
 }
 
@@ -124,7 +117,7 @@ img {
     height: 2vh;
     background-color: #FF5733;
     position: absolute;
-    border-radius: 1vh;
+    /* border-radius: 1vh; */
     margin: 0;
     padding: 0;
 }
