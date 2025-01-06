@@ -8,7 +8,7 @@ export class Paddle {
     }
 
     renderPaddle() {
-        let container = document.querySelector('.game-container');
+        let container = document.querySelector('.container');
         let containerrect = container.getBoundingClientRect();
         let paddle = document.createElement('div');
         paddle.className = "paddle";

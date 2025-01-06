@@ -18,30 +18,39 @@ img {
     height: auto;
 }
 
-
+.container{
+    width: 80vh;
+    height: 80vh;
+}
 
 /* Game Container */
 .game-container {
-    width: 80vh;
-    height: 80vh;
+    width: 100%;
+    height: 80%;
     border: #5ACCE5 dashed 0.5vh;
     padding: 0;
     margin: 0;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    box-sizing: border-box;
     /* padding-bottom: 10vh;  */
 }
 
 /* Header */
 .bricks-container {
+    height: 80%;
+    width: 100%;
     display: grid;
     grid-template-columns: repeat(8, 1fr);
-    grid-template-rows: repeat(7, 1fr);
+    grid-template-rows: repeat(14, 1fr);
+    align-items: center;
+    justify-items: center;
 }
 
 .header {
-    height: 5vh;
+    height: 10%;
+    width: 100%;
     padding: 0 0.5vw;
     width: 100%;
     box-sizing: border-box;
@@ -66,16 +75,16 @@ img {
 
 /* Game Over Dashboard */
 .menu-bar {
+    width: 80vh;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     background: rgba(255, 0, 0, 0.9) !important;
-    padding: 3vh 4vw;
+    padding: 3vh 0;
     border-radius: 1vh;
     box-shadow: 0 0.5vh 2vh rgba(0, 0, 0, 0.5);
     text-align: center;
-    width: 50vw;
     color: #FFF;
     border: 0.3vh dashed yellow;
     z-index: 3;

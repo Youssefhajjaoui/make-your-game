@@ -3,6 +3,13 @@ import { Game } from "./game.js";
 
 
 export function main() {
+    if(window.innerWidth <= window.innerHeight){
+        document.querySelector('.container').style.width = '80vw';
+        document.querySelector('.container').style.height = '80vw';
+    }else{
+        document.querySelector('.container').style.width = '80vh';
+        document.querySelector('.container').style.height = '80vh';
+    }
     const player = new Player();
     const game = new Game();
     player.game = game;
@@ -11,40 +18,35 @@ export function main() {
     game.listenertoreseize();
     game.setup();
     player.listnermenu();
+    document.addEventListener('keydown',(event) => {
+        if (event.code === "Space") {
+            if (game.player.overlay.style.display === 'block') {
+                return
+            }
+            game.paddle.listener('keydown', game.paddle.keyDownHandler);
+            game.addchrono();
+            game.isPaused = false;
+        }
+    });
     requestAnimationFrame(() => updateGameState(game));
 }
+
 
 export function updateGameState(game) {
     if (game.isPaused) {
         game.stopchrono();
+        game.ball.reset();
         if (game.overlay.style.display === 'block') {
             game.paddle.removeListener('keydown', game.paddle.keyDownHandler);
-        } else {
-            game.paddle.listener('keydown', game.paddle.keyDownHandler);
-            game.ball.reset();
         }
-        const startGame = (event) => {
-            if (event.code === "Space") {
-                game.isPaused = false;
-                game.addchrono();
-                document.removeEventListener('keydown', startGame);
-            }
-        }
-        document.addEventListener('keydown', startGame);
-    }else if (game.isLose) {
-        document.removeEventListener('keydown', startGame);
-        return
-    }
-    if (!game.isPaused && game.player.lives > 0 && !game.iswin()) {
+    } else if (!game.isPaused && game.player.lives > 0 && !game.isWin()) {
         game.collisionWithBricks();
         game.collisionswithcontainer();
         game.collisionWithPaddle();
         game.updateHeader();
-    } else if (game.player.lives === 0) {
-        game.gameover();
-        game.stopchrono();
-        return;
-    } else if (game.iswin()) {
+    }
+    
+    if (game.isWin()) {
         game.bricksContainer.innerHTML = '';
         game.currentLevel++;
         game.setupbricks();
@@ -52,7 +54,11 @@ export function updateGameState(game) {
         game.updateHeader();
         game.stopchrono();
         game.isPaused = true;
+    }else if (game.player.lives === 0) {
+        game.gameover();
+        game.stopchrono();
     }
+
     requestAnimationFrame(() => updateGameState(game));
 }
 

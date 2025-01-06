@@ -183,7 +183,6 @@ export class Game {
     }
 
     gameover() {
-        this.isLose=true;
         let dashbord = document.getElementById('game-over-dashboard');
         let score = dashbord.querySelector('.game-over-score');
         score.textContent = `Score: ${this.player.score}`;
@@ -204,7 +203,7 @@ export class Game {
         this.level.textContent = `Level: ${this.currentLevel}`;
 
     }
-    iswin() {
+    isWin() {
         return this.bricksLive.length === 0;
     }
     listenertoreseize() {
