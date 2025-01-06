@@ -74,24 +74,24 @@ img {
         box-shadow: 0 0.5vh 0.5vh rgba(0, 0, 255, 0.7);
     }
 
-/* Game Over Dashboard */
-.menu-bar {
+
+    .menu-bar {
     width: 80vh;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background: rgba(255, 0, 0, 0.9) !important;
+    background: #CCCCCC;
     padding: 3vh 0;
-    border-radius: 1vh;
     box-shadow: 0 0.5vh 2vh rgba(0, 0, 0, 0.5);
     text-align: center;
     color: #FFF;
-    border: 0.3vh dashed yellow;
+    border: 0.3vh dashed #5ACCE5;
     z-index: 3;
 }
 
 .menu-bar h1 {
+    color: black;
     font-size: 3vh;
     margin-bottom: 2vh;
     text-transform: uppercase;
@@ -108,13 +108,13 @@ img {
     border: 0.2vh solid #e9ecef;
 }
 
-.menu-bar a {
+
+
+.menu-bar button, .menu-bar a{
     display: inline-block;
     padding: 1.5vh 3vw;
-    background: #4CAF50;
-    color: white;
-    text-decoration: none;
-    border-radius: 1vh;
+    background: #5ACCE5;
+    color: black;
     font-size: 2vh;
     font-weight: bold;
     border: none;
@@ -127,7 +127,6 @@ img {
     height: 2vh;
     background-color: #58FA83;
     position: absolute;
-    /* border-radius: 1vh; */
     margin: 0;
     padding: 0;
 }
@@ -144,12 +143,9 @@ img {
 /* Menu */
 .menu-button {
     cursor: pointer;
-    background: #FFF;
-    border: 0.2vh solid #CCC;
-    border-radius: 1vh;
+    color: #0095DD;
     font-size: 2vh;
     font-weight: bold;
-    text-transform: uppercase;
 }
 
 
