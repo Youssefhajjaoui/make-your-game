@@ -113,7 +113,7 @@ img {
 
 /* Paddle */
 .paddle {
-    width: 15vw;
+    width: 7vw;
     height: 2vh;
     background-color: #FF5733;
     position: absolute;
@@ -124,8 +124,8 @@ img {
 
 /* Ball */
 .ball {
-    width: 2vw;
-    height: 2vw;
+    width: 1.5vw;
+    height: 1.5vw;
     background-color: #FFD700;
     position: absolute;
     border-radius: 50%;
