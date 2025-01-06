@@ -192,9 +192,9 @@ export class Game {
     updateHeader() {
         this.livesContainer.innerHTML = '';
         for (let i = 0; i < this.player.lives; i++) {
-            const life = document.createElement('img');
+            const life = document.createElement('span');
             life.classList.add('heart');
-            life.src = 'assets/icons/life.png';
+            life.textContent = '❤️';
             this.livesContainer.appendChild(life);
         }
 

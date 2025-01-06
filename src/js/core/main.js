@@ -4,11 +4,11 @@ import { Game } from "./game.js";
 
 export function main() {
     if(window.innerWidth <= window.innerHeight){
-        document.querySelector('.container').style.width = '80vw';
-        document.querySelector('.container').style.height = '80vw';
+        document.querySelector('.container').style.width = '100vw';
+        document.querySelector('.container').style.height = '100vw';
     }else{
-        document.querySelector('.container').style.width = '80vh';
-        document.querySelector('.container').style.height = '80vh';
+        document.querySelector('.container').style.width = '100vh';
+        document.querySelector('.container').style.height = '100vh';
     }
     const player = new Player();
     const game = new Game();
