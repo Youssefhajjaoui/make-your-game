@@ -10,7 +10,7 @@ export class Game {
         this.isPaused = false;
         this.isLose = false;
         this.bricksLive = [];
-        this.currentLevel = 1;
+        this.currentLevel = 0;
         this.paddle = null;
         this.ball = null;
         this.player = null;
@@ -194,7 +194,7 @@ export class Game {
         for (let i = 0; i < this.player.lives; i++) {
             const life = document.createElement('span');
             life.classList.add('heart');
-            life.textContent = '❤️';
+            life.textContent = '💙';
             this.livesContainer.appendChild(life);
         }
 

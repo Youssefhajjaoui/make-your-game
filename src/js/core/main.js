@@ -1,5 +1,6 @@
 import { Player } from "../models/player.js";
 import { Game } from "./game.js";
+import { levels } from "./utils.js";
 
 
 export function main() {
@@ -47,13 +48,23 @@ export function updateGameState(game) {
     }
     
     if (game.isWin()) {
-        game.bricksContainer.innerHTML = '';
-        game.currentLevel++;
-        game.setupbricks();
-        game.ball.reset();
-        game.updateHeader();
         game.stopchrono();
         game.isPaused = true;
+        
+        if(game.currentLevel === levels.length - 1){
+            game.overlay.style.display = 'block';
+            const winMessage = document.createElement("h1");
+            winMessage.textContent = 'You Win';
+            winMessage.classList.add('win-message');
+            document.body.append(winMessage);
+            game.isPaused = true;
+        }else{
+            game.currentLevel++;
+            game.setupbricks();
+            game.ball.reset();
+            game.updateHeader();
+            game.bricksContainer.innerHTML = '';
+        }
     }else if (game.player.lives === 0) {
         game.gameover();
         game.stopchrono();
