@@ -5,6 +5,8 @@ import { levels } from "./utils.js";
 
 export class Game {
     constructor() {
+        this.chrono = 0;
+        this.interval = null;
         this.isPaused = false;
         this.isLose = false;
         this.bricksLive = [];
@@ -12,6 +14,7 @@ export class Game {
         this.paddle = null;
         this.ball = null;
         this.player = null;
+        this.time = document.querySelector('.time');
         this.container = document.querySelector('.container');
         this.score = document.querySelector('.score');
         this.level = document.querySelector('.level');
@@ -55,11 +58,6 @@ export class Game {
                 return brick;
             }).filter(brick => brick !== null)
         );
-    }
-
-    update() {
-        this.checkCollisions();
-        // this.updateBallMovement();
     }
 
     collisionswithcontainer() {
@@ -200,6 +198,8 @@ export class Game {
             life.src = 'assets/icons/life.png';
             this.livesContainer.appendChild(life);
         }
+
+        this.time.textContent = `time: ${Math.floor(this.chrono / 60)}:${(this.chrono % 60).toString().padStart(2, '0')}`;
         this.score.textContent = `Score: ${this.player.score}`;
         this.level.textContent = `Level: ${this.currentLevel}`;
 
@@ -210,18 +210,28 @@ export class Game {
     listenertoreseize() {
         const reloadOnResize = debounce(() => {
             window.location.reload();
-        }, 200); 
+        }, 200);
 
         window.addEventListener('resize', reloadOnResize);
+    }
+
+    addchrono() {
+        this.stopchrono(this.interval);
+        this.interval = setInterval(() => {
+            this.chrono++;
+        }, 1000)
+    }
+    stopchrono() {
+        clearInterval(this.interval);
     }
 }
 
 function debounce(func, delay) {
     let timeout;
     return (...args) => {
-        clearTimeout(timeout); 
+        clearTimeout(timeout);
         timeout = setTimeout(() => {
             func(...args);
-        }, delay); 
+        }, delay);
     };
 }
