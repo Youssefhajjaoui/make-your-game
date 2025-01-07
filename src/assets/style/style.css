@@ -130,7 +130,7 @@ img {
 
 /* Paddle */
 .paddle {
-    width: 7vw;
+    width: 7vh;
     height: 2vh;
     background-color: #58FA83;
     position: absolute;

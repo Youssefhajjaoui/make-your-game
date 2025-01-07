@@ -19,6 +19,7 @@ export class Ball {
         let ballrect = ball.getBoundingClientRect();
         let pdRect = paddlelem.getBoundingClientRect();
         this.x = pdRect.right - (pdRect.width / 2) - (ballrect.width / 2), this.y = pdRect.top - ballrect.height;
+        this.y = 
         ball.style.left = `${this.x}px`;
         ball.style.top = `${this.y}px`;
         this.elem = ball;

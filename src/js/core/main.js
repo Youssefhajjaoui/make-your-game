@@ -21,15 +21,20 @@ export function main() {
         }
     
         brick.forEach(b => {
-            b.style.width = isPortrait ? '12vw' : '4.5vw';
-            b.style.height = isPortrait ? '8vh' : '3vh';
+            b.style.height = isPortrait ? '3vw' : '3vh';
+            b.style.width = isPortrait ? '4.5vw' : '4.5vh';
         });
     
-        paddle.style.width = isPortrait ? '20vw' : '7vw';
-        paddle.style.height = isPortrait ? '6vh' : '2vh';
-    
-        ball.style.width = isPortrait ? '4vw' : '1.5vw';
-        ball.style.height = isPortrait ? '4vw' : '1.5vw';
+        paddle.style.height = isPortrait ? '2vw' : '2vh';
+        paddle.style.width = isPortrait ? '10vw' : '10vh';
+
+        const containerRect = container.getBoundingClientRect();
+        const paddleRect = paddle.getBoundingClientRect();
+        paddle.style.top = `${ ((containerRect.bottom - paddleRect.height) - (isPortrait ? window.innerWidth * 0.02 : window.innerHeight * 0.02))}px`;
+        paddle.style.left = `${(containerRect.right - (containerRect.width) / 2) - (paddleRect.width / 2)}px`;
+        
+        ball.style.width = isPortrait ? '2vw' : '2vh';
+        ball.style.height = isPortrait ? '2vw' : '2vh';
     
         menuBar.style.padding = isPortrait ? '5vh 0' : '3vh 0';
         document.querySelector('.menu-bar h1').style.fontSize = isPortrait ? '5vh' : '3vh';
