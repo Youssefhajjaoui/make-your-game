@@ -3,6 +3,7 @@ export class Ball {
         this.x = 0;
         this.y = 0;
         this.elem = null;
+        this.rec = null;
         this.vectx = 0;
         this.vecty = -16;
         this.radius = 7;
@@ -19,10 +20,11 @@ export class Ball {
         let ballrect = ball.getBoundingClientRect();
         let pdRect = paddlelem.getBoundingClientRect();
         this.x = pdRect.right - (pdRect.width / 2) - (ballrect.width / 2), this.y = pdRect.top - ballrect.height;
-        this.y = 
-        ball.style.left = `${this.x}px`;
+        this.y =
+            ball.style.left = `${this.x}px`;
         ball.style.top = `${this.y}px`;
         this.elem = ball;
+        this.rec = this.elem.getBoundingClientRect();
         return ball
     }
 

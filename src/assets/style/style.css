@@ -13,7 +13,7 @@ body {
     overflow: hidden;
 }
 
-.win-message{
+.win-message {
     position: absolute;
     font-size: 10vh;
     color: #fff;
@@ -25,8 +25,8 @@ img {
     height: auto;
 }
 
-.container{
-    width:100vh;
+.container {
+    width: 100vh;
     height: 100vh;
 }
 
@@ -72,17 +72,17 @@ img {
 }
 
 .brick {
-        width: 4.5vw;
-        height: 3vh;
-        background-color: #0055FF; 
-        display: inline-block;
-        border: 0.2vh solid #fff;
-        border-radius: 0.5vh;
-        box-shadow: 0 0.5vh 0.5vh rgba(0, 0, 255, 0.7);
-    }
+    width: 4.5vw;
+    height: 3vh;
+    background-color: #0055FF;
+    display: inline-block;
+    border: 0.2vh solid #fff;
+    border-radius: 0.5vh;
+    box-shadow: 0 0.5vh 0.5vh rgba(0, 0, 255, 0.7);
+}
 
 
-    .menu-bar {
+.menu-bar {
     width: 80vh;
     position: absolute;
     top: 50%;
@@ -117,7 +117,8 @@ img {
 
 
 
-.menu-bar button, .menu-bar a{
+.menu-bar button,
+.menu-bar a {
     display: inline-block;
     padding: 1.5vh 3vw;
     background: #5ACCE5;
@@ -127,6 +128,13 @@ img {
     border: none;
     cursor: pointer;
 }
+
+.null-brick {
+    background-color: transparent;
+    border: 0;
+    box-shadow: none;
+}
+
 
 /* Paddle */
 .paddle {

@@ -4,6 +4,7 @@ export class Brick {
         this.y = y;
         this.type = 1;
         this.elem = null;
+        this.rec = null;
         this.Isdetroyed = false;
     }
 
@@ -13,6 +14,7 @@ export class Brick {
         brick.className = 'brick';
         container.append(brick);
         this.elem = brick
+        this.rec = this.elem.getBoundingClientRect();
         return brick
     }
 

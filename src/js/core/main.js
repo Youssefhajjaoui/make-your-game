@@ -7,43 +7,40 @@ export function main() {
     function adjustStyles() {
         const isPortrait = window.innerWidth <= window.innerHeight;
         const container = document.querySelector('.container');
-        const brick = document.querySelectorAll('.brick');
         const paddle = document.querySelector('.paddle');
         const ball = document.querySelector('.ball');
         const menuBar = document.querySelector('.menu-bar');
-    
-        if (isPortrait) {
-            container.style.width = '100vw';
-            container.style.height = '100vw';
-        } else {
-            container.style.width = '100vh';
-            container.style.height = '100vh';
-        }
-    
-        brick.forEach(b => {
-            b.style.height = isPortrait ? '3vw' : '3vh';
-            b.style.width = isPortrait ? '4.5vw' : '4.5vh';
-        });
-    
-        paddle.style.height = isPortrait ? '2vw' : '2vh';
-        paddle.style.width = isPortrait ? '10vw' : '10vh';
 
+        // Cache dimensions
         const containerRect = container.getBoundingClientRect();
-        const paddleRect = paddle.getBoundingClientRect();
-        paddle.style.top = `${ ((containerRect.bottom - paddleRect.height) - (isPortrait ? window.innerWidth * 0.02 : window.innerHeight * 0.02))}px`;
-        paddle.style.left = `${(containerRect.right - (containerRect.width) / 2) - (paddleRect.width / 2)}px`;
-        
-        ball.style.width = isPortrait ? '2vw' : '2vh';
-        ball.style.height = isPortrait ? '2vw' : '2vh';
-    
+        const paddleWidth = isPortrait ? '10vw' : '10vh';
+        const paddleHeight = isPortrait ? '2vw' : '2vh';
+        const ballSize = isPortrait ? '2vw' : '2vh';
+
+        // Apply styles in batches
+        container.style.cssText = `
+            width: ${isPortrait ? '100vw' : '100vh'};
+            height: ${isPortrait ? '100vw' : '100vh'};
+        `;
+        paddle.style.cssText = `
+            width: ${paddleWidth};
+            height: ${paddleHeight};
+            top: ${containerRect.bottom - parseFloat(paddleHeight) * window.innerWidth * 0.02}px;
+            left: ${containerRect.right - containerRect.width / 2 - parseFloat(paddleWidth) / 2}px;
+        `;
+        ball.style.cssText = `
+            width: ${ballSize};
+            height: ${ballSize};
+        `;
         menuBar.style.padding = isPortrait ? '5vh 0' : '3vh 0';
         document.querySelector('.menu-bar h1').style.fontSize = isPortrait ? '5vh' : '3vh';
         document.querySelectorAll('.menu-bar div, .menu-bar button, .menu-bar a').forEach(el => {
             el.style.fontSize = isPortrait ? '3vh' : '2vh';
         });
     }
-    
-    
+
+
+    console.time('debut');
     const player = new Player();
     const game = new Game();
     player.game = game;
@@ -52,7 +49,7 @@ export function main() {
     game.listenertoreseize();
     game.setup();
     player.listnermenu();
-    document.addEventListener('keydown',(event) => {
+    document.addEventListener('keydown', (event) => {
         if (event.code === "Space") {
             if (game.player.overlay.style.display === 'block') {
                 return
@@ -63,49 +60,74 @@ export function main() {
         }
     });
     adjustStyles();
-
     requestAnimationFrame(() => updateGameState(game));
+    console.timeEnd('debut');
 }
 
 
 export function updateGameState(game) {
+    // console.time('frame');
+
     if (game.isPaused) {
-        game.stopchrono();
-        game.ball.reset();
-        if (game.overlay.style.display === 'block') {
-            game.paddle.removeListener('keydown', game.paddle.keyDownHandler);
-        }
-    } else if (!game.isPaused && game.player.lives > 0 && !game.isWin()) {
-        game.collisionWithBricks();
-        game.collisionswithcontainer();
-        game.collisionWithPaddle();
-        game.updateHeader();
+        handlePausedState(game);
+    } else if (game.player.lives > 0 && !game.isWin()) {
+        handleActiveState(game);
     }
-    
+
     if (game.isWin()) {
-        game.stopchrono();
-        game.isPaused = true;
-
-        if(game.currentLevel === levels.length - 1){
-            game.overlay.style.display = 'block';
-            const winMessage = document.createElement("h1");
-            winMessage.textContent = 'You Win';
-            winMessage.classList.add('win-message');
-            document.body.append(winMessage);
-            game.isPaused = true;
-        }else{
-            game.currentLevel++;
-            game.setupbricks();
-            game.ball.reset();
-            game.updateHeader();
-            game.bricksContainer.innerHTML = '';
-        }
-    }else if (game.player.lives === 0) {
-        game.gameover();
-        game.stopchrono();
+        handleWinState(game);
+    } else if (game.player.lives === 0) {
+        handleGameOver(game);
     }
 
+    // console.timeEnd('frame');
     requestAnimationFrame(() => updateGameState(game));
+}
+
+function handlePausedState(game) {
+    game.stopchrono();
+    game.ball.reset();
+
+    if (game.overlay.style.display === 'block') {
+        game.paddle.removeListener('keydown', game.paddle.keyDownHandler);
+    }
+}
+
+function handleActiveState(game) {
+    game.checkCollisions();
+    game.updateHeader();
+}
+
+function handleWinState(game) {
+    game.stopchrono();
+    game.isPaused = true;
+
+    if (game.currentLevel === levels.length - 1) {
+        displayWinMessage(game);
+    } else {
+        moveToNextLevel(game);
+    }
+}
+
+function displayWinMessage(game) {
+    game.overlay.style.display = 'block';
+    const winMessage = document.createElement("h1");
+    winMessage.textContent = 'You Win';
+    winMessage.classList.add('win-message');
+    document.body.append(winMessage);
+}
+
+function moveToNextLevel(game) {
+    game.currentLevel++;
+    game.bricksContainer.innerHTML = ''; // Clear previous level
+    game.setupbricks();
+    game.ball.reset();
+    game.updateHeader();
+}
+
+function handleGameOver(game) {
+    game.gameover();
+    game.stopchrono();
 }
 
 main();

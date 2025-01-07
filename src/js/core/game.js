@@ -26,162 +26,132 @@ export class Game {
 
     setup() {
         this.updateHeader();
+
+        const fragment = document.createDocumentFragment();
         const paddle = new Paddle();
-        const paddlelem = paddle.renderPaddle();
         const ball = new Ball();
-        const ballelem = ball.renderBall();
-        this.gameContainer.append(paddlelem);
-        this.gameContainer.append(ballelem);
+        const paddleElem = paddle.renderPaddle();
+        const ballElem = ball.renderBall();
+        fragment.appendChild(paddleElem);
+        fragment.appendChild(ballElem);
+        this.gameContainer.appendChild(fragment);
+
         paddle.listener();
         this.setupbricks();
+
         this.paddle = paddle;
         this.ball = ball;
-        return { paddle, ball };
+
     }
+
 
     setupbricks() {
         const board = levels[this.currentLevel];
+        const fragment = document.createDocumentFragment();
+
         this.bricksLive = board.flatMap((row, i) =>
             row.map((brickType, j) => {
-                if (brickType === 0) {
-                    const brick = new Brick();
-                    const brickelem = brick.renderBrick();
-                    brick.type = brickType;
-                    this.bricksContainer.appendChild(brickelem);
-                    brickelem.style.visibility = 'hidden';
-                    return null
-                };
                 const brick = new Brick();
-                const brickelem = brick.renderBrick();
+                const brickElem = brick.renderBrick();
                 brick.type = brickType;
-                this.bricksContainer.appendChild(brickelem);
-                return brick;
+
+                if (brickType === 0) {
+                    brickElem.classList.add('null-brick');
+                }
+
+                fragment.appendChild(brickElem);
+                return brickType === 0 ? null : brick;
             }).filter(brick => brick !== null)
         );
+
+        this.bricksContainer.appendChild(fragment);
     }
 
-    collisionswithcontainer() {
-        const containerRect = this.gameContainer.getBoundingClientRect();
+
+
+    checkCollisions() {
         const ball = this.ball;
-        let border = 0.005 * window.innerHeight;
-        let newDx = ball.vectx;
-        let newDy = ball.vecty;
+        const ballRect = ball.elem.getBoundingClientRect();
+        const ballRadius = ballRect.width / 2;
+        const ballCenterX = ballRect.left + ballRadius;
+        const ballCenterY = ballRect.top + ballRadius;
 
-        if (ball.x + ball.elem.getBoundingClientRect().width >= containerRect.right - border) {
-            newDx = -Math.abs(newDx);
-        }
+        // Container collision
+        const containerRect = this.gameContainer.getBoundingClientRect();
+        const border = 0.005 * window.innerHeight;
 
-        if (ball.x <= containerRect.left + border) {
-            newDx = Math.abs(newDx);
+        if (ball.x + ballRect.width >= containerRect.right - border) {
+            ball.vectx = -Math.abs(ball.vectx);
+        } else if (ball.x <= containerRect.left + border) {
+            ball.vectx = Math.abs(ball.vectx);
         }
 
         if (ball.y <= containerRect.top + border) {
-            newDy = Math.abs(newDy);
-        }
-
-        if (ball.y + ball.elem.getBoundingClientRect().width >= containerRect.bottom - border) {
+            ball.vecty = Math.abs(ball.vecty);
+        } else if (ball.y + ballRect.width >= containerRect.bottom - border) {
             this.player.lives--;
             ball.elem.remove();
-            this.ball = new Ball;
+            this.ball = new Ball();
             this.ball.renderBall();
             this.isPaused = true;
-            return
+            return;
         }
 
-        ball.move(newDx, newDy);
-        ball.vectx = newDx;
-        ball.vecty = newDy;
-    }
+        // Paddle collision
+        const paddleRect = this.paddle.elem.getBoundingClientRect();
+        if (ballCenterY + ballRadius >= paddleRect.top &&
+            ballCenterY - ballRadius <= paddleRect.bottom &&
+            ballCenterX + ballRadius >= paddleRect.left &&
+            ballCenterX - ballRadius <= paddleRect.right) {
 
-    collisionWithPaddle() {
-        const ball = this.ball;
-        const paddle = this.paddle.elem.getBoundingClientRect();
-        const ballElem = ball.elem.getBoundingClientRect();
-        const ballRadius = ballElem.width / 2;
+            const hitOffset = ballCenterX - (paddleRect.left + paddleRect.width / 2);
+            const baseSpeed = Math.hypot(ball.vectx, ball.vecty);
+            const bounceAngle = (hitOffset / (paddleRect.width / 2)) * (Math.PI / 3);
 
-        const ballCenterX = ballElem.left + ballRadius;
-        const ballCenterY = ballElem.top + ballRadius;
-
-        const ballLeft = ballCenterX - ballRadius;
-        const ballRight = ballCenterX + ballRadius;
-        const ballTop = ballCenterY - ballRadius;
-        const ballBottom = ballCenterY + ballRadius;
-
-        if (ballRight >= paddle.left &&
-            ballLeft <= paddle.right &&
-            ballBottom >= paddle.top &&
-            ballTop <= paddle.bottom) {
-
-            const paddleWidth = paddle.right - paddle.left;
-            const paddleCenter = paddle.left + (paddleWidth / 2);
-            const hitOffset = ballCenterX - paddleCenter;
-            const normalizedHitOffset = hitOffset / (paddleWidth / 2);
-
-            const baseSpeed = Math.sqrt(ball.vectx * ball.vectx + ball.vecty * ball.vecty);
-            const maxBounceAngle = Math.PI / 3;
-
-            const bounceAngle = normalizedHitOffset * maxBounceAngle;
-
-            ball.vectx = baseSpeed * Math.sin(bounceAngle);
+            ball.vectx = baseSpeed * Math.sin(bounceAngle) + (this.paddle.velocity || 0) * 0.2;
             ball.vecty = -baseSpeed * Math.cos(bounceAngle);
 
-            if (this.paddle.velocity) {
-                ball.vectx += this.paddle.velocity * 0.2;
+            // Ensure minimum vertical speed
+            const minSpeed = baseSpeed * 0.5;
+            if (Math.abs(ball.vecty) < minSpeed) {
+                ball.vecty = ball.vecty > 0 ? minSpeed : -minSpeed;
             }
 
-            const variation = (Math.random() - 0.5) * 0.2;
-            ball.vectx += variation;
+            ball.elem.style.top = `${paddleRect.top - ballRect.height - 1}px`;
+        }
 
-            const minVerticalSpeed = baseSpeed * 0.5;
-            if (Math.abs(ball.vecty) < minVerticalSpeed) {
-                ball.vecty = ball.vecty > 0 ? minVerticalSpeed : -minVerticalSpeed;
+        // Brick collision
+        for (let i = this.bricksLive.length - 1; i >= 0; i--) {
+            const brick = this.bricksLive[i];
+            const brickRect = brick.elem.getBoundingClientRect();
+
+            if (ballCenterX + ballRadius >= brickRect.left &&
+                ballCenterX - ballRadius <= brickRect.right &&
+                ballCenterY + ballRadius >= brickRect.top &&
+                ballCenterY - ballRadius <= brickRect.bottom) {
+
+                this.player.score += 10;
+
+                // Simple collision response based on ball position relative to brick center
+                const fromCenter = {
+                    x: ballCenterX - (brickRect.left + brickRect.width / 2),
+                    y: ballCenterY - (brickRect.top + brickRect.height / 2)
+                };
+
+                if (Math.abs(fromCenter.x) > Math.abs(fromCenter.y)) {
+                    ball.vectx = fromCenter.x > 0 ? Math.abs(ball.vectx) : -Math.abs(ball.vectx);
+                } else {
+                    ball.vecty = fromCenter.y > 0 ? Math.abs(ball.vecty) : -Math.abs(ball.vecty);
+                }
+
+                this.bricksLive.splice(i, 1);
+                brick.elem.style.visibility = "hidden";
+                break;
             }
-
-            ball.elem.style.top = (paddle.top - ballElem.height - 1) + 'px';
         }
 
         ball.move(ball.vectx, ball.vecty);
     }
-
-    collisionWithBricks() {
-        const ball = this.ball;
-        const ballElem = ball.elem.getBoundingClientRect();
-        const ballRadius = ballElem.width / 2;
-        const ballCenterX = ballElem.left + ballRadius;
-        const ballCenterY = ballElem.top + ballRadius;
-
-        this.bricksLive.forEach((brick, index) => {
-            const brickRect = brick.elem.getBoundingClientRect();
-
-            if (
-                ballCenterX + ballRadius >= brickRect.left &&
-                ballCenterX - ballRadius <= brickRect.right &&
-                ballCenterY + ballRadius >= brickRect.top &&
-                ballCenterY - ballRadius <= brickRect.bottom
-            ) {
-                this.player.score += 10;
-                const overlapLeft = Math.abs(ballCenterX + ballRadius - brickRect.left);
-                const overlapRight = Math.abs(ballCenterX - ballRadius - brickRect.right);
-                const overlapTop = Math.abs(ballCenterY + ballRadius - brickRect.top);
-                const overlapBottom = Math.abs(ballCenterY - ballRadius - brickRect.bottom);
-                const minOverlap = Math.min(overlapLeft, overlapRight, overlapTop, overlapBottom);
-
-                if (minOverlap === overlapTop) {
-                    ball.vecty = -Math.abs(ball.vecty);
-                } else if (minOverlap === overlapBottom) {
-                    ball.vecty = Math.abs(ball.vecty);
-                } else if (minOverlap === overlapLeft) {
-                    ball.vectx = -Math.abs(ball.vectx);
-                } else if (minOverlap === overlapRight) {
-                    ball.vectx = Math.abs(ball.vectx);
-                }
-
-                this.bricksLive.splice(index, 1);
-                brick.elem.style.visibility = "hidden";
-            }
-        });
-    }
-
     gameover() {
         let dashbord = document.getElementById('game-over-dashboard');
         let score = dashbord.querySelector('.game-over-score');
