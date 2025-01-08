@@ -3,8 +3,10 @@ export class Paddle {
         this.x = 0;
         this.y = 0
         this.elem = null;
-        this.raduis = 50;
         this.border = window.innerHeight * 0.005;
+        this.renderPaddle();
+        this.listener();
+        this.dimensions = null;
     }
 
     renderPaddle() {
@@ -13,14 +15,13 @@ export class Paddle {
         let paddle = document.createElement('div');
         paddle.className = "paddle";
         container.append(paddle);
-        let paddlerect = paddle.getBoundingClientRect();
+        this.dimen = paddle.getBoundingClientRect();
         this.x = (containerrect.right - (containerrect.width) / 2) - (paddlerect.width / 2)
         this.y = (container.getBoundingClientRect().bottom - paddlerect.height) - window.innerHeight * 0.01;
         paddle.style.left = `${this.x}px`;
         paddle.style.top = `${this.y}px`;
         this.elem = paddle;
         this.rect = paddle.getBoundingClientRect();
-        return paddle;
     }
 
     moveRight() {

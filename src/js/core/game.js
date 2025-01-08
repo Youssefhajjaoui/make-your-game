@@ -2,6 +2,7 @@ import { Ball } from "../models/ball.js";
 import { Brick } from "../models/brick.js";
 import { Paddle } from "../models/paddle.js";
 import { levels } from "./utils.js";
+import { dimensions } from "../models/dimensions.js";
 
 export class Game {
     constructor() {
@@ -9,35 +10,29 @@ export class Game {
         this.lastTime = 0;
         this.timeAccumulator = 0;
         this.isPaused = false;
-        this.isLose = false;
         this.bricksLive = [];
         this.currentLevel = 0;
-        this.paddle = null;
-        this.ball = null;
+        this.paddle = new Paddle();
+        this.ball = new Ball();
         this.player = null;
         this.time = document.querySelector('.time');
         this.container = document.querySelector('.container');
+        this.ContainerDimensions = new dimensions(this.container);
+        this.gameContainer = document.querySelector('.game-container');
+        this.gameContainerDimensions = new dimensions(this.gameContainer);
         this.score = document.querySelector('.score');
         this.level = document.querySelector('.level');
         this.livesContainer = document.querySelector('.lives-container');
-        this.gameContainer = document.querySelector('.game-container');
         this.bricksContainer = document.querySelector('.bricks-container');
         this.overlay = document.querySelector('.overlay');
+        this.setupbricks();
+        this.ball.renderBall()
     }
 
     setup() {
         this.updateHeader();
-        const paddle = new Paddle();
-        const paddlelem = paddle.renderPaddle();
-        const ball = new Ball();
-        const ballelem = ball.renderBall();
-        this.gameContainer.append(paddlelem);
-        this.gameContainer.append(ballelem);
-        paddle.listener();
-        this.setupbricks();
-        this.paddle = paddle;
-        this.ball = ball;
-        return { paddle, ball };
+        
+        // return { paddle, ball };
     }
 
     setupbricks() {

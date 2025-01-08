@@ -1,15 +1,17 @@
 export class Ball {
-    constructor(x, y) {
+    constructor() {
         this.x = 0;
         this.y = 0;
         this.elem = null;
         this.vectx = 0;
         this.vecty = -16;
         this.radius = 7;
+        this.container = document.querySelector('.game-container');
+        this.containerDimensions = new dimensions(this.container);
     }
 
     renderBall(x, y) {
-        let container = document.querySelector('.container');
+        let container = document.querySelector('.game-container');
         const ball = document.createElement('div');
         ball.className = "ball";
         this.x = x;
