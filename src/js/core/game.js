@@ -25,12 +25,12 @@ export class Game {
         this.containerdimension = new dimensions(this.gameContainer);
         this.bricksContainer = document.querySelector('.bricks-container');
         this.overlay = document.querySelector('.overlay');
-        this.ball = new Ball();
         this.paddle = new Paddle(this.gameContainerDimensions, this.gameContainer);
+        this.ball = new Ball();
         console.log(this.paddle.dimensions.right);
 
         this.setupbricks();
-        this.ball.renderBall(this.paddle.dimensions);
+        this.ball.renderBall(this.paddle.dimensions, this.gameContainer);
     }
 
     setup() {
@@ -83,7 +83,7 @@ export class Game {
             this.player.lives--;
             ball.elem.remove();
             this.ball = new Ball;
-            this.ball.renderBall();
+            this.ball.renderBall(this.paddle.dimensions, this.gameContainer);
             this.isPaused = true;
             return
         }
@@ -95,7 +95,7 @@ export class Game {
 
     collisionWithPaddle() {
         const ball = this.ball;
-        const paddle = this.paddle.elem.getBoundingClientRect();
+        const paddleDimensions = this.paddle.dimensions;
         const ballElem = ball.elem.getBoundingClientRect();
         const ballRadius = ballElem.width / 2;
 
@@ -107,13 +107,13 @@ export class Game {
         const ballTop = ballCenterY - ballRadius;
         const ballBottom = ballCenterY + ballRadius;
 
-        if (ballRight >= paddle.left &&
-            ballLeft <= paddle.right &&
-            ballBottom >= paddle.top &&
-            ballTop <= paddle.bottom) {
+        if (ballRight >= paddleDimensions.left &&
+            ballLeft <= paddleDimensions.right &&
+            ballBottom >= paddleDimensions.top &&
+            ballTop <= paddleDimensions.bottom) {
 
-            const paddleWidth = paddle.right - paddle.left;
-            const paddleCenter = paddle.left + (paddleWidth / 2);
+            const paddleWidth = paddleDimensions.right - paddleDimensions.left;
+            const paddleCenter = paddleDimensions.left + (paddleWidth / 2);
             const hitOffset = ballCenterX - paddleCenter;
             const normalizedHitOffset = hitOffset / (paddleWidth / 2);
 
@@ -137,7 +137,7 @@ export class Game {
                 ball.vecty = ball.vecty > 0 ? minVerticalSpeed : -minVerticalSpeed;
             }
 
-            ball.elem.style.top = (paddle.top - ballElem.height - 1) + 'px';
+            ball.elem.style.top = (paddleDimensions.top - ballElem.height - 1) + 'px';
         }
 
         ball.move(ball.vectx, ball.vecty);

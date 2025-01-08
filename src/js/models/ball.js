@@ -11,16 +11,13 @@ export class Ball {
         this.dimensions = null;
     }
 
-    renderBall(padRect) {
-        let container = document.querySelector('.game-container');
+    renderBall(paddleDimensions, container) {
         const ball = document.createElement('div');
         ball.className = "ball";
         container.append(ball);
-        const paddlelem = document.querySelector(".paddle");
         this.dimensions = new dimensions(ball);
-        this.x = padRect.right - (padRect.width / 2) - (this.dimensions.width / 2), this.y = padRect.top - this.dimensions.height;
-        this.y =
-            ball.style.left = `${this.x}px`;
+        this.x = paddleDimensions.right - (paddleDimensions.width / 2) - (this.dimensions.width / 2), this.y = paddleDimensions.top - this.dimensions.height;
+        ball.style.left = `${this.x}px`;
         ball.style.top = `${this.y}px`;
         this.elem = ball;
         return ball

@@ -1,26 +1,26 @@
 import { dimensions } from "./dimensions.js";
 
 export class Paddle {
-    constructor(containerRect, container) {
+    constructor(containerDimensions, container) {
         this.x = 0;
         this.y = 0;
-        this.elem = null;
+        this.paddle = null;
         this.border = window.innerHeight * 0.005;
         this.dimensions = null;
-        this.renderPaddle(containerRect, container);
+        this.renderPaddle(containerDimensions, container);
         this.listener();
     }
 
-    renderPaddle(containerrect, container) {
+    renderPaddle(containerDimensions, container) {
         let paddle = document.createElement('div');
         paddle.className = "paddle";
         container.append(paddle);
         this.dimensions = new dimensions(paddle);
-        this.x = (containerrect.right - (containerrect.width) / 2) - (this.dimensions.width / 2)
+        this.x = (containerDimensions.right - (containerDimensions.width) / 2) - (this.dimensions.width / 2)
         this.y = (container.getBoundingClientRect().bottom - this.dimensions.height) - window.innerHeight * 0.01;
         paddle.style.left = `${this.x}px`;
         paddle.style.top = `${this.y}px`;
-        this.elem = paddle;
+        this.paddle = paddle;
     }
 
     moveRight(containerRect) {
@@ -28,7 +28,7 @@ export class Paddle {
         let left = (window.innerWidth * 40) / 2700;
         if (this.x < (containerRect.right) - paddleWidth) {
             this.x += left;
-            this.elem.style.left = `${Math.min(this.x, (containerRect.right - paddleWidth))}px`;
+            this.paddle.style.left = `${Math.min(this.x, (containerRect.right - paddleWidth))}px`;
             this.dimensions.update({
                 x: Math.min(this.x, (containerRect.right - paddleWidth)),
                 left: Math.min(this.x, (containerRect.right - paddleWidth)),
@@ -42,7 +42,7 @@ export class Paddle {
         let left = (window.innerWidth * 40) / 2700;
         if (this.x > containerRect.x) {
             this.x -= left;
-            this.elem.style.left = `${Math.max(this.x, containerRect.left + this.border)}px`;
+            this.paddle.style.left = `${Math.max(this.x, containerRect.left + this.border)}px`;
             this.dimensions.update({
                 x: Math.max(this.x, containerRect.left + this.border),
                 left: Math.max(this.x, containerRect.left + this.border),
@@ -52,13 +52,13 @@ export class Paddle {
     }
 
 
-    keyDownHandler(container, event) {        
+    keyDownHandler(event, paddle) {        
         switch (event.value) {
             case "ArrowLeft":
-                this.moveLeft(container);
+                this.moveLeft(paddle);
                 break;
             case "ArrowRight":
-                this.moveRight(container);
+                this.moveRight(paddle);
                 break;
             default:
                 break;

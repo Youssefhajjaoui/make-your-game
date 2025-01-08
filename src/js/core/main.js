@@ -58,7 +58,6 @@ export function main() {
             game.isPaused = false;
         }
     });
-    adjustStyles();
 
     requestAnimationFrame(() => updateGameState(game));
 }
