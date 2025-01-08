@@ -6,7 +6,8 @@ import { levels } from "./utils.js";
 export class Game {
     constructor() {
         this.chrono = 0;
-        this.interval = null;
+        this.lastTime = 0;
+        this.timeAccumulator = 0;
         this.isPaused = false;
         this.isLose = false;
         this.bricksLive = [];
@@ -214,14 +215,25 @@ export class Game {
         window.addEventListener('resize', reloadOnResize);
     }
 
-    addchrono() {
-        this.stopchrono(this.interval);
-        this.interval = setInterval(() => {
+    updateChrono(currentTime) {
+        if (!this.lastTime) {
+            this.lastTime = currentTime;
+            return;
+        }
+
+        const deltaTime = currentTime - this.lastTime;
+        this.timeAccumulator += deltaTime;
+
+        if (this.timeAccumulator >= 1000) {
             this.chrono++;
-        }, 1000)
+            this.timeAccumulator -= 1000;
+        }
+
+        this.lastTime = currentTime;
     }
-    stopchrono() {
-        clearInterval(this.interval);
+    stopChrono() {
+        this.lastTime = null;
+        this.timeAccumulator = 0;
     }
 }
 
