@@ -39,6 +39,7 @@ export function main() {
         });
     }
 
+
     const player = new Player();
     const game = new Game();
     player.game = game;
@@ -52,7 +53,8 @@ export function main() {
             if (game.player.overlay.style.display === 'block') {
                 return
             }
-            game.paddle.listener('keydown', game.paddle.keyDownHandler);
+            game.paddle.listener('keydown', game.paddle.keyDownHandler.bind(game.paddle, game.containerdimension));
+
             game.isPaused = false;
         }
     });
@@ -65,7 +67,7 @@ export function main() {
 export function updateGameState(game) {
     if (game.isPaused) {
         game.stopChrono();
-        game.ball.reset();
+        game.ball.reset(game.paddle.dimensions);
         if (game.overlay.style.display === 'block') {
             game.paddle.removeListener('keydown', game.paddle.keyDownHandler);
         }
@@ -90,7 +92,7 @@ export function updateGameState(game) {
         } else {
             game.currentLevel++;
             game.setupbricks();
-            game.ball.reset();
+            game.ball.reset(game.paddle.dimensions);
             game.updateHeader();
             game.bricksContainer.innerHTML = '';
         }
