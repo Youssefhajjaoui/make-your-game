@@ -1,15 +1,14 @@
 export class Paddle {
-    constructor() {
+    constructor(container) {
         this.x = 0;
-        this.y = 0
+        this.y = 0;
         this.elem = null;
+        this.container = container;
         this.raduis = 50;
         this.border = window.innerHeight * 0.005;
     }
 
-    renderPaddle() {
-        let container = document.querySelector('.game-container');
-        let containerrect = container.getBoundingClientRect();
+    renderPaddle(containerrect) {
         let paddle = document.createElement('div');
         paddle.className = "paddle";
         container.append(paddle);

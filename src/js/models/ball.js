@@ -1,3 +1,5 @@
+import { dimensions } from "./dimensions";
+
 export class Ball {
     constructor(x, y) {
         this.x = 0;
@@ -5,10 +7,11 @@ export class Ball {
         this.elem = null;
         this.vectx = 0;
         this.vecty = -16;
+        this.ballrect = null;
         this.radius = 7;
     }
 
-    renderBall(x, y) {
+    renderBall(padRect) {
         let container = document.querySelector('.container');
         const ball = document.createElement('div');
         ball.className = "ball";
@@ -16,11 +19,10 @@ export class Ball {
         this.y = y;
         container.append(ball);
         const paddlelem = document.querySelector(".paddle");
-        let ballrect = ball.getBoundingClientRect();
-        let pdRect = paddlelem.getBoundingClientRect();
-        this.x = pdRect.right - (pdRect.width / 2) - (ballrect.width / 2), this.y = pdRect.top - ballrect.height;
-        this.y = 
-        ball.style.left = `${this.x}px`;
+        let ballrect = new dimensions(ball);
+        this.x = padRect.right - (padRect.width / 2) - (ballrect.width / 2), this.y = padRect.top - ballrect.height;
+        this.y =
+            ball.style.left = `${this.x}px`;
         ball.style.top = `${this.y}px`;
         this.elem = ball;
         return ball
@@ -43,11 +45,9 @@ export class Ball {
     }
 
     // Optional: method to reset position
-    reset() {
+    reset(paddle) {
         const paddlelem = document.querySelector(".paddle");
-        let ballrect = this.elem.getBoundingClientRect();
-        let pdRect = paddlelem.getBoundingClientRect();
-        this.x = pdRect.right - (pdRect.width / 2) - (ballrect.width / 2), this.y = pdRect.top - ballrect.height;
+        this.x = paddle.right - (paddle.width / 2) - (this.ballrect.width / 2), this.y = paddle.top - this.ballrect.height;
         this.vectx = 0;
         this.vecty = 5;
         this.elem.style.left = `${this.x}px`;

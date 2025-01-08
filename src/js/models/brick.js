@@ -1,9 +1,10 @@
 export class Brick {
-    constructor(x, y) {
+    constructor(container) {
         this.x = x;
         this.y = y;
         this.type = 1;
         this.elem = null;
+        this.container = container;
         this.Isdetroyed = false;
     }
 

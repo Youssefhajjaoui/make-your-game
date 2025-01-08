@@ -1,5 +1,6 @@
 import { Ball } from "../models/ball.js";
 import { Brick } from "../models/brick.js";
+import { dimensions } from "../models/dimensions.js";
 import { Paddle } from "../models/paddle.js";
 import { levels } from "./utils.js";
 
@@ -21,6 +22,7 @@ export class Game {
         this.level = document.querySelector('.level');
         this.livesContainer = document.querySelector('.lives-container');
         this.gameContainer = document.querySelector('.game-container');
+        this.containerdimension = new dimensions(this.gameContainer);
         this.bricksContainer = document.querySelector('.bricks-container');
         this.overlay = document.querySelector('.overlay');
     }
@@ -28,7 +30,7 @@ export class Game {
     setup() {
         this.updateHeader();
         const paddle = new Paddle();
-        const paddlelem = paddle.renderPaddle();
+        const paddlelem = paddle.renderPaddle(this.containerdimension);
         const ball = new Ball();
         const ballelem = ball.renderBall();
         this.gameContainer.append(paddlelem);
@@ -49,7 +51,7 @@ export class Game {
                     const brickelem = brick.renderBrick();
                     brick.type = brickType;
                     this.bricksContainer.appendChild(brickelem);
-                    brickelem.style.visibility = 'hidden';
+                    brickelem.classList.add('hidden');
                     return null
                 };
                 const brick = new Brick();
@@ -178,7 +180,7 @@ export class Game {
                 }
 
                 this.bricksLive.splice(index, 1);
-                brick.elem.style.visibility = "hidden";
+                brick.elem.classList.add('hidden');
             }
         });
     }
