@@ -1,6 +1,5 @@
 import { Player } from "../models/player.js";
 import { Game } from "./game.js";
-import { levels } from "./utils.js";
 
 
 export function main() {
@@ -19,8 +18,9 @@ export function main() {
     game.fps = 0;
     game.longFrames = 0;
     game.droppedFrames = 0;
-
     document.addEventListener('keydown', (event) => {
+
+        event.preventDefault();
         if (event.code === "Space") {
             if (game.player.overlay.style.display === 'block') {
                 return;
@@ -34,27 +34,6 @@ export function main() {
 }
 
 export function updateGameState(game, timestamp) {
-    // if (!game.lastFrameTime) {
-    //     game.lastFrameTime = timestamp;
-    // }
-    // const frameTime = timestamp - game.lastFrameTime;
-
-    // game.frameCount++;
-    // if (frameTime > 33) { 
-    //     game.longFrames++;
-    //     console.warn(`Long frame detected: ${Math.round(frameTime)}ms`);
-    // }
-    // if (frameTime > 50) { 
-    //     game.droppedFrames++;
-    //     console.warn(`Dropped frame detected: ${Math.round(frameTime)}ms`);
-    // }
-
-    // if (timestamp - game.lastFpsUpdate >= 1000) {
-    //     game.fps = Math.round((game.frameCount * 1000) / (timestamp - game.lastFpsUpdate));
-    //     game.frameCount = 0;
-    //     game.lastFpsUpdate = timestamp;
-    // }
-
     if (game.isPaused) {
         game.stopChrono();
         if (game.overlay.style.display === 'block') {
@@ -71,6 +50,7 @@ export function updateGameState(game, timestamp) {
     if (game.isWin()) {
         game.isPaused = true;
         game.stopChrono();
+        game.paddle.removeListener('keydown', game.paddle.keyDownHandler);
         if (game.currentLevel === levels.length - 1) {
             game.overlay.style.display = 'block';
             const winMessage = document.createElement("h1");
@@ -86,6 +66,7 @@ export function updateGameState(game, timestamp) {
             game.bricksContainer.replaceChildren();
         }
     } else if (game.player.lives === 0) {
+        game.paddle.removeListener('keydown', game.paddle.keyDownHandler);
         game.gameover();
         game.stopChrono();
     }

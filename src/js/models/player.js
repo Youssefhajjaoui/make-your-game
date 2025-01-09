@@ -12,17 +12,18 @@ export class Player {
         this.menuButton.addEventListener('click', () => {
             this.game.isPaused = true;
             this.overlay.style.display = 'block';
-            this.menuBar.style.display = 'block';   
+            this.menuBar.style.display = 'block';
             const closeMenu = () => {
                 this.overlay.style.display = 'none';
                 this.menuBar.style.display = 'none';
                 this.game.paddle.listener();
             };
 
-            this.menuBar.querySelector('#restart').addEventListener('click', ()=>{
+            this.menuBar.querySelector('#restart').addEventListener('click', (event) => {
+                event.preventDefault();
                 window.location.reload();
             });
-           this.menuBar.querySelector('#continue').addEventListener('click', closeMenu);
+            this.menuBar.querySelector('#continue').addEventListener('click', closeMenu);
         });
 
     }

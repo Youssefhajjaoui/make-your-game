@@ -214,7 +214,10 @@ export class Game {
             window.location.reload();
         }, 200);
 
-        window.addEventListener('resize', reloadOnResize);
+        window.addEventListener('resize', (event) => {
+            event.preventDefault();
+            reloadOnResize();
+        });
     }
 
     updateChrono(currentTime) {
