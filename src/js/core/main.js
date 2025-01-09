@@ -83,7 +83,7 @@ export function updateGameState(game, timestamp) {
             game.setupbricks();
             game.ball.reset(game.paddle.dimensions);
             game.updateHeader();
-            game.bricksContainer.innerHTML = '';
+            game.bricksContainer.replaceChildren();
         }
     } else if (game.player.lives === 0) {
         game.gameover();
