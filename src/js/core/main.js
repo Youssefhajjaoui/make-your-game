@@ -33,7 +33,28 @@ export function main() {
     requestAnimationFrame((timestamp) => updateGameState(game, timestamp));
 }
 
+let rgb = [0, 0, 255];
+const rgbIncrement = 2
+const maxRgbValue = 255;
+function updateBackgroundColor() {
+    rgb[2] = (rgb[2] - rgbIncrement + maxRgbValue) % maxRgbValue;
+
+    rgb[0] = rgb[0] + rgbIncrement
+    rgb[1] = rgb[1] + rgbIncrement
+
+    document.body.style.backgroundColor = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
+}
+
+let lastFrame = 0
 export function updateGameState(game, timestamp) {
+    lastFrame = Date.now() - lastFrame
+    if (lastFrame < 16.67) {
+        console.log("idel frame", lastFrame);
+        updateBackgroundColor()
+    }
+    lastFrame = Date.now()
+
+
     if (game.isPaused) {
         game.stopChrono();
         if (game.overlay.style.display === 'block') {
