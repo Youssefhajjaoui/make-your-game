@@ -6,7 +6,7 @@ export class Ball {
         this.y = 0;
         this.elem = null;
         this.vectx = 0;
-        this.vecty = -16;
+        this.vecty = -4;
         this.radius = 7;
         this.dimensions = null;
     }
@@ -15,13 +15,28 @@ export class Ball {
         const ball = document.createElement('div');
         ball.className = "ball";
         container.append(ball);
+
         this.dimensions = new dimensions(ball);
-        this.x = paddleDimensions.right - (paddleDimensions.width / 2) - (this.dimensions.width / 2), this.y = paddleDimensions.top - this.dimensions.height;
+
+        this.x = paddleDimensions.right - (paddleDimensions.width / 2) - (this.dimensions.width / 2);
+        this.y = paddleDimensions.top - this.dimensions.height;
+
         ball.style.left = `${this.x}px`;
         ball.style.top = `${this.y}px`;
+
+        this.dimensions.update({
+            x: this.x,
+            y: this.y,
+            top: this.y,
+            left: this.x,
+            right: this.x + this.dimensions.width,
+            bottom: this.y + this.dimensions.height,
+        });
+        //console.log(this.dimensions);
+
         this.elem = ball;
-        return ball
     }
+
 
 
     move(vectx, vecty) {
@@ -30,16 +45,31 @@ export class Ball {
 
         this.elem.style.left = `${this.x}px`;
         this.elem.style.top = `${this.y}px`;
+
+        this.dimensions.update({
+            x: this.x,
+            y: this.y,
+            left: this.x,
+            top: this.y,
+            right: this.x + this.dimensions.width,
+            bottom: this.y + this.dimensions.height,
+        });
     }
 
-    // Optional: method to reset position
+
     reset(paddle) {
-        const paddlelem = document.querySelector(".paddle");
+
         this.x = paddle.right - (paddle.width / 2) - (this.dimensions.width / 2), this.y = paddle.top - this.dimensions.height;
-        this.vectx = 0;
-        this.vecty = 5;
         this.elem.style.left = `${this.x}px`;
         this.elem.style.top = `${this.y}px`;
+        paddle.update({
+            x: this.x,
+            y: this.y,
+            left: this.x,
+            top: this.y,
+            right: this.x + this.dimensions.width,
+            bottom: this.y + this.dimensions.height,
+        });
     }
 
 }

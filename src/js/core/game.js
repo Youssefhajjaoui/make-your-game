@@ -27,7 +27,7 @@ export class Game {
         this.overlay = document.querySelector('.overlay');
         this.paddle = new Paddle(this.gameContainerDimensions, this.gameContainer);
         this.ball = new Ball();
-        console.log(this.paddle.dimensions.right);
+        // console.log(this.paddle.dimensions.right);
 
         this.setupbricks();
         this.ball.renderBall(this.paddle.dimensions, this.gameContainer);
@@ -48,6 +48,7 @@ export class Game {
                     const brickelem = brick.renderBrick();
                     brick.type = brickType;
                     this.bricksContainer.appendChild(brickelem);
+                    brick.dimension = new dimensions(brickelem);
                     brickelem.classList.add('hidden');
                     return null
                 };
@@ -55,19 +56,20 @@ export class Game {
                 const brickelem = brick.renderBrick();
                 brick.type = brickType;
                 this.bricksContainer.appendChild(brickelem);
+                brick.dimension = new dimensions(brickelem);
                 return brick;
             }).filter(brick => brick !== null)
         );
     }
 
     collisionswithcontainer() {
-        const containerRect = this.gameContainer.getBoundingClientRect();
+        const containerRect = this.gameContainerDimensions;
         const ball = this.ball;
         let border = 0.005 * window.innerHeight;
         let newDx = ball.vectx;
         let newDy = ball.vecty;
 
-        if (ball.x + ball.elem.getBoundingClientRect().width >= containerRect.right - border) {
+        if (ball.x + ball.dimensions.width >= containerRect.right - border) {
             newDx = -Math.abs(newDx);
         }
 
@@ -79,7 +81,7 @@ export class Game {
             newDy = Math.abs(newDy);
         }
 
-        if (ball.y + ball.elem.getBoundingClientRect().width >= containerRect.bottom - border) {
+        if (ball.y + ball.dimensions.width >= containerRect.bottom - border) {
             this.player.lives--;
             ball.elem.remove();
             this.ball = new Ball;
@@ -94,9 +96,10 @@ export class Game {
     }
 
     collisionWithPaddle() {
+        const ballElem = this.ball.dimensions;
         const ball = this.ball;
         const paddleDimensions = this.paddle.dimensions;
-        const ballElem = ball.elem.getBoundingClientRect();
+
         const ballRadius = ballElem.width / 2;
 
         const ballCenterX = ballElem.left + ballRadius;
@@ -144,15 +147,14 @@ export class Game {
     }
 
     collisionWithBricks() {
+        const ballElem = this.ball.dimensions;
         const ball = this.ball;
-        const ballElem = ball.elem.getBoundingClientRect();
         const ballRadius = ballElem.width / 2;
         const ballCenterX = ballElem.left + ballRadius;
         const ballCenterY = ballElem.top + ballRadius;
 
         this.bricksLive.forEach((brick, index) => {
-            const brickRect = brick.elem.getBoundingClientRect();
-
+            const brickRect = brick.dimension;
             if (
                 ballCenterX + ballRadius >= brickRect.left &&
                 ballCenterX - ballRadius <= brickRect.right &&
@@ -189,6 +191,7 @@ export class Game {
         dashbord.style.display = 'block';
         this.overlay.style.display = 'block';
     }
+
     updateHeader() {
         this.livesContainer.innerHTML = '';
         for (let i = 0; i < this.player.lives; i++) {

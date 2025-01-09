@@ -7,68 +7,94 @@ export class Paddle {
         this.paddle = null;
         this.border = window.innerHeight * 0.005;
         this.dimensions = null;
+        this.containerDimensions = containerDimensions;
         this.renderPaddle(containerDimensions, container);
         this.listener();
     }
 
     renderPaddle(containerDimensions, container) {
-        let paddle = document.createElement('div');
+        const paddle = document.createElement('div');
         paddle.className = "paddle";
         container.append(paddle);
+
         this.dimensions = new dimensions(paddle);
-        this.x = (containerDimensions.right - (containerDimensions.width) / 2) - (this.dimensions.width / 2)
+
+        this.x = (containerDimensions.right - (containerDimensions.width / 2)) - (this.dimensions.width / 2);
         this.y = (container.getBoundingClientRect().bottom - this.dimensions.height) - window.innerHeight * 0.01;
+
         paddle.style.left = `${this.x}px`;
         paddle.style.top = `${this.y}px`;
+
+        this.dimensions.update({
+            x: this.x,
+            y: this.y,
+            left: this.x,
+            top: this.y,
+            right: this.x + this.dimensions.width,
+            bottom: this.y + this.dimensions.height,
+        });
+
         this.paddle = paddle;
     }
 
+
     moveRight(containerRect) {
-        let paddleWidth = this.dimensions.width + this.border;
-        let left = (window.innerWidth * 40) / 2700;
-        if (this.x < (containerRect.right) - paddleWidth) {
-            this.x += left;
-            this.paddle.style.left = `${Math.min(this.x, (containerRect.right - paddleWidth))}px`;
+        const paddleWidth = this.dimensions.width + this.border;
+        const moveStep = (window.innerWidth * 40) / 2700;
+
+        if (this.x < containerRect.right - paddleWidth) {
+            this.x += moveStep;
+
+            const newX = Math.min(this.x, containerRect.right - paddleWidth);
+            this.paddle.style.left = `${newX}px`;
+
             this.dimensions.update({
-                x: Math.min(this.x, (containerRect.right - paddleWidth)),
-                left: Math.min(this.x, (containerRect.right - paddleWidth)),
-                right: Math.min(this.x, (containerRect.right - paddleWidth)) + paddleWidth,
+                x: newX,
+                left: newX,
+                right: newX + paddleWidth,
             });
         }
     }
+
 
     moveLeft(containerRect) {
-        let paddleWidth = this.dimensions.width + this.border;
-        let left = (window.innerWidth * 40) / 2700;
-        if (this.x > containerRect.x) {
-            this.x -= left;
-            this.paddle.style.left = `${Math.max(this.x, containerRect.left + this.border)}px`;
+        const paddleWidth = this.dimensions.width + this.border;
+        const moveStep = (window.innerWidth * 40) / 2700;
+
+        if (this.x > containerRect.left) {
+            this.x -= moveStep;
+
+            const newX = Math.max(this.x, containerRect.left + this.border);
+            this.paddle.style.left = `${newX}px`;
+
             this.dimensions.update({
-                x: Math.max(this.x, containerRect.left + this.border),
-                left: Math.max(this.x, containerRect.left + this.border),
-                right: Math.max(this.x, containerRect.left + this.border) + paddleWidth,
+                x: newX,
+                left: newX,
+                right: newX + paddleWidth,
             });
         }
     }
 
 
-    keyDownHandler(event, paddle) {        
-        switch (event.value) {
+
+    keyDownHandler = (event) => {
+        switch (event.key) {
             case "ArrowLeft":
-                this.moveLeft(paddle);
+                this.moveLeft(this.containerDimensions);
                 break;
             case "ArrowRight":
-                this.moveRight(paddle);
+                this.moveRight(this.containerDimensions);
                 break;
             default:
                 break;
         }
-    }
+    };
+
 
 
 
     listener() {
-        document.addEventListener('keydown', this.keyDownHandler);
+        document.addEventListener('keydown', this.keyDownHandler.bind(this));
     }
 
     removeListener() {

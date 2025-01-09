@@ -1,3 +1,5 @@
+import { dimensions } from "./dimensions.js";
+
 export class Brick {
     constructor(container) {
         this.x = 0;
@@ -6,6 +8,7 @@ export class Brick {
         this.elem = null;
         this.container = container;
         this.Isdetroyed = false;
+        this.dimension = null;
     }
 
     renderBrick() {
