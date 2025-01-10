@@ -32,33 +32,35 @@ export function main() {
 
     requestAnimationFrame((timestamp) => updateGameState(game, timestamp));
 }
+let rgb = [[100, 190, 240], [10, 20, 40]]; 
+const rgbIncrement = 1;  
+let fact = 1;  
+let color = [99, 100, 100];
 
-let rgb = [0, 0, 255];
-const rgbIncrement = 2
-const maxRgbValue = 255;
 function updateBackgroundColor() {
-    rgb[2] = (rgb[2] - rgbIncrement + maxRgbValue) % maxRgbValue;
-
-    rgb[0] = rgb[0] + rgbIncrement
-    rgb[1] = rgb[1] + rgbIncrement
-
-    document.body.style.backgroundColor = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
+    color[0] += rgbIncrement * fact;
+    color[1] += rgbIncrement * fact;
+    color[2] += rgbIncrement * fact;
+    if ((color[0] <= rgb[1][0]||color[0] >= rgb[0][0])  || (color[1] <= rgb[1][1]||color[1] >= rgb[0][1]) || (color[2] <= rgb[1][2]|| color[2] >= rgb[0][2])) {
+        fact *= -1;
+    } 
+    document.body.style.background = `linear-gradient(to right, rgb(${color[0]}, ${color[1]}, ${color[2]}), rgb(${color[0]-20}, ${color[1]+10}, ${color[2]+10}))`;
 }
 
-let lastFrame = 0
+
+
 export function updateGameState(game, timestamp) {
-    lastFrame = Date.now() - lastFrame
-    if (lastFrame < 16.67) {
-        console.log("idel frame", lastFrame);
-        updateBackgroundColor()
-    }
-    lastFrame = Date.now()
+
+    updateBackgroundColor()
+
 
 
     if (game.isPaused) {
         game.stopChrono();
         if (game.overlay.style.display === 'block') {
             game.paddle.removeListener('keydown', game.paddle.keyDownHandler);
+        }else{
+           // game.ball.reset(game.paddle.dimensions);
         }
     } else if (!game.isPaused && game.player.lives > 0 && !game.isWin()) {
         game.collisionWithBricks();
