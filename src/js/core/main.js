@@ -19,8 +19,6 @@ export function main() {
     game.longFrames = 0;
     game.droppedFrames = 0;
     document.addEventListener('keydown', (event) => {
-
-        event.preventDefault();
         if (event.code === "Space") {
             if (game.player.overlay.style.display === 'block') {
                 return;
@@ -68,7 +66,7 @@ export function updateGameState(game, timestamp) {
         if (game.overlay.style.display === 'block') {
             game.paddle.removeListener('keydown', game.paddle.keyDownHandler);
         }else{
-           // game.ball.reset(game.paddle.dimensions);
+            game.ball.reset(game.paddle.dimensions);
         }
     } else if (!game.isPaused && game.player.lives > 0 && !game.isWin()) {
         game.collisionWithBricks();

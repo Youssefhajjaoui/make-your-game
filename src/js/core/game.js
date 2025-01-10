@@ -215,7 +215,6 @@ export class Game {
         }, 200);
 
         window.addEventListener('resize', (event) => {
-            event.preventDefault();
             reloadOnResize();
         });
     }

@@ -62,7 +62,7 @@ export class Ball {
         this.x = paddle.right - (paddle.width / 2) - (this.dimensions.width / 2), this.y = paddle.top - this.dimensions.height;
         this.elem.style.left = `${this.x}px`;
         this.elem.style.top = `${this.y}px`;
-        paddle.update({
+        this.dimensions.update({
             x: this.x,
             y: this.y,
             left: this.x,
