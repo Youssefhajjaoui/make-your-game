@@ -84,7 +84,10 @@ img {
     border-radius: 0.5vh;
     box-shadow: 0 0.5vh 0.5vh rgba(0, 0, 255, 0.7);
 }
-
+body ::before{
+    filter: blur(50px);
+    z-index: -1;
+}
 
 .menu-bar {
     width: 80vh;
@@ -97,7 +100,7 @@ img {
     box-shadow: 0 0.5vh 2vh rgba(0, 0, 0, 0.5);
     text-align: center;
     color: #FFF;
-    border: 0.3vh dashed #5ACCE5;
+    border: 0.3vh dashed rgb(90, 204, 229);
     z-index: 3;
 }
 

@@ -32,21 +32,29 @@ export function main() {
 
     requestAnimationFrame((timestamp) => updateGameState(game, timestamp));
 }
-let rgb = [[100, 190, 240], [10, 20, 40]]; 
-const rgbIncrement = 1;  
-let fact = 1;  
-let color = [99, 100, 100];
+const startColor = [0, 50, 150]; 
+const endColor = [90, 204, 229]; 
+const rgbIncrement = 0.5;
+let fact = 1; 
+let color = [...startColor]; 
 
 function updateBackgroundColor() {
-    color[0] += rgbIncrement * fact;
-    color[1] += rgbIncrement * fact;
-    color[2] += rgbIncrement * fact;
-    if ((color[0] <= rgb[1][0]||color[0] >= rgb[0][0])  || (color[1] <= rgb[1][1]||color[1] >= rgb[0][1]) || (color[2] <= rgb[1][2]|| color[2] >= rgb[0][2])) {
-        fact *= -1;
-    } 
-    document.body.style.background = `linear-gradient(to right, rgb(${color[0]}, ${color[1]}, ${color[2]}), rgb(${color[0]-20}, ${color[1]+10}, ${color[2]+10}))`;
-}
+    for (let i = 0; i < 3; i++) {
+        color[i] += rgbIncrement * fact;
 
+        if (color[i] >= endColor[i] || color[i] <= startColor[i]) {
+            fact *= -1;
+        }
+    }
+
+    document.body.style.setProperty(
+        "--dynamic-gradient",
+        `linear-gradient(to right, rgb(${color[0]}, ${color[1]}, ${color[2]}), rgb(${color[0] + rgbIncrement}, ${color[1] + rgbIncrement}, ${color[2] + rgbIncrement}))`
+    );
+
+    document.body.style.background = `var(--dynamic-gradient)`;
+
+}
 
 
 export function updateGameState(game, timestamp) {
