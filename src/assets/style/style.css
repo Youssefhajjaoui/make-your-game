@@ -144,6 +144,7 @@ body ::before{
     position: absolute;
     margin: 0;
     padding: 0;
+    transition: left 0.2s ease-out;
 }
 
 /* Ball */
